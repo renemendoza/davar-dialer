@@ -13,7 +13,8 @@ gem 'unicorn'
 # Deploy with Capistrano
 # gem 'capistrano'
 
- gem 'authlogic'
+# gem 'authlogic'
+ gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'  #hmm
  #gem 'cancan'
  gem 'formtastic'
  gem 'compass'
