@@ -50,6 +50,21 @@ describe ContactListsController do
       response.should be_success
     end
 
+    it "should render the show template" do
+      do_get
+      response.should render_template("show")
+    end
+
+    it "should find the contact list requested" do
+      ContactList.should_receive(:find).with("1").and_return(@contact_list)
+      do_get
+    end
+
+    it "should assign the contact_list for the view" do
+      do_get
+      assigns[:contact_list].should == @contact_list
+    end
+
   end
 
   describe "GET /contact_lists/new" do
