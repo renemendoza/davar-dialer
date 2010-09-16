@@ -5,7 +5,7 @@ describe ContactListsController do
 
   describe "GET /contact_lists" do
     before(:each) do 
-      @contact_list = Factory(:contact_list)
+      @contact_list = Factory(:contact_list_with_uploaded_file)   #sweet
       ContactList.stub!(:find).and_return([@contact_list])
     end
 
@@ -35,9 +35,26 @@ describe ContactListsController do
 
   end
 
+  describe "GET /contact_lists/1" do
+    before(:each) do 
+      @contact_list = Factory(:contact_list_with_uploaded_file)   #sweet
+      ContactList.stub!(:find).and_return(@contact_list)
+    end
+
+    def do_get
+      get :show, :id => "1"
+    end
+
+    it "should be succesful" do
+      do_get
+      response.should be_success
+    end
+
+  end
+
   describe "GET /contact_lists/new" do
     before(:each) do 
-      @contact_list = Factory(:contact_list)
+      @contact_list = Factory.build(:contact_list)
       ContactList.stub!(:new).and_return(@contact_list)
     end
     
@@ -76,8 +93,8 @@ describe ContactListsController do
   #with valid params
   describe "POST /contact_lists" do
     before(:each) do 
-      @contact_list = Factory(:contact_list)
-      @params = {}
+      @contact_list = Factory.build(:contact_list)
+      @params = {"list" => fixture_file_upload( "#{Rails.root}/features/assets/demo_contact_list.csv", 'text/csv') }
     end
 
     def do_post
@@ -93,6 +110,11 @@ describe ContactListsController do
     it "flash notice should not be nil" do
       do_post
       flash[:notice].should_not be_nil
+    end
+
+    it "flash error should be nil" do
+      do_post
+      flash[:error].should be_nil
     end
 
     it "should redirect to the contact list listing" do

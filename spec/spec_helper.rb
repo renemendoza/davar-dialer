@@ -6,6 +6,7 @@ require 'factory_girl'
 
 
 
+include ActionDispatch::TestProcess
 
 
 
