@@ -19,17 +19,13 @@ gem 'unicorn'
  gem 'compass'
  gem 'haml'
 
- group :development, :test do
- 
-  gem "rspec-rails", ">= 2.0.0.beta.20"
-  gem 'factory_girl'
+ group :development, :test, :cucumber do
   gem "autotest"
- end
-
- group :cucumber do
   gem 'capybara'
+  gem 'webrat'
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem 'cucumber-rails'
   gem "cucumber"
   gem "rspec-rails", ">= 2.0.0.beta.20"
