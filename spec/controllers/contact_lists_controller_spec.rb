@@ -71,5 +71,36 @@ describe ContactListsController do
     end
 
   end
+
+
+  #with valid params
+  describe "POST /contact_lists" do
+    before(:each) do 
+      @contact_list = Factory(:contact_list)
+      @params = {}
+    end
+
+    def do_post
+      post :create, :contact_list => @params
+    end
+
+    it "should create a new contact list from parameters" do
+      ContactList.should_receive(:new).with(@params).and_return(@contact_list)
+      @contact_list.should_receive(:save)
+      do_post
+    end
+
+    it "flash notice should not be nil" do
+      do_post
+      flash[:notice].should_not be_nil
+    end
+
+    it "should redirect to the contact list listing" do
+      do_post
+      response.should redirect_to(contact_lists_path)
+    end
+
+
+  end
 end
 
