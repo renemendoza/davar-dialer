@@ -1,7 +1,9 @@
 class ContactListsController < ApplicationController
 
+  before_filter :require_valid_account
+
   def index
-    @contact_lists =  ContactList.find(:all)
+    @contact_lists =  current_user.contact_lists
   end
 
   def new
@@ -10,11 +12,10 @@ class ContactListsController < ApplicationController
   
 
   def create
-    @contact_list =  ContactList.new(params[:contact_list])
+    @contact_list = current_user.contact_lists.build(params[:contact_list])
     if @contact_list.save
-
       flash[:notice] = "Contact list created"
-      redirect_to contact_lists_path
+      redirect_to contact_list_path(@contact_list)
     else
       flash.now[:error] = "There was an error creating the requested contact list"
       render :action => 'new'
@@ -22,6 +23,6 @@ class ContactListsController < ApplicationController
   end
 
   def show
-    @contact_list =  ContactList.find(params[:id])
+    @contact_list =  current_user.contact_lists.find(params[:id])
   end
 end
