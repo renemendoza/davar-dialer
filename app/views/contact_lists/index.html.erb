@@ -2,7 +2,8 @@
 
 <ul>
   <% @contact_lists.each do |c| %>
-    <li> <%= "#{c.list_file_name} with (#{c.contacts.count}) contacts" %> 
+    <li> 
+    <%= link_to c.list_file_name, contact_list_path(c) -%> with (<%= c.contacts.count -%>) contacts 
     </li>
   <% end %>
 </ul>
