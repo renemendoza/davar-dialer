@@ -1,1 +1,12 @@
+<h3> Your contact lists </h3>
+
+<ul>
+  <% @contact_lists.each do |c| %>
+    <li> <%= "#{c.list_file_name} with (#{c.contacts.count}) contacts" %> 
+    </li>
+  <% end %>
+</ul>
+
+<h4> <%= link_to "Add a new contact list", new_contact_list_path %> </h4>
+
 

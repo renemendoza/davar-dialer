@@ -1,0 +1,5 @@
+<ul class="contacts">
+  <% @contact_list.contacts.each do |contact| %>
+    <li> <%= "#{contact.name} ---- #{contact.phone_number_1}" %> </li>
+  <% end %>
+</ul>
