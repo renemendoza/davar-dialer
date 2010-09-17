@@ -3,7 +3,13 @@ When /^I upload a file with (\d+) valid contacts$/ do |c|
   click_button "Create"
 end
 
-
-Then /^I should have a new list with (\d+) contacts$/ do |i|
-  Contact.count.should == i.to_i
+Then /^I should see a list with (\d+) contacts$/ do |i|
+  page.should have_css("ul.contacts li", :count => i.to_i)
 end
+
+Then /^agent "([^"]*)" should have a new list with (\d+) new contacts$/ do |agent_username, i|
+#"
+  agent = Agent.find_by_username(agent_username)
+  agent.contact_lists.last.contacts.count.should == i.to_i
+end
+
