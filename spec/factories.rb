@@ -24,6 +24,5 @@ Factory.define :agent do |f|
   f.sequence(:username) {|n| "john#{n}"}
   f.sequence(:email) {|n| "johny_test#{n}@gmail.com"}
   f.password "123456"
-  f.password_confirmation "123456"
-#  f.persistence_token { Authlogic::Random.hex_token }
+  f.password_confirmation  { |u| u.password }
 end
