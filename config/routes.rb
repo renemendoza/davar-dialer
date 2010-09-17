@@ -1,7 +1,13 @@
 DavarDialer::Application.routes.draw do
 
+  get "new/edit"
+
+  get "new/index"
+
   resources :contact_lists
   resources :sessions
+  resources :agents
+
   match 'login' => 'sessions#new', :as => :login
   match 'logout' => 'sessions#destroy', :as => :logout
 
