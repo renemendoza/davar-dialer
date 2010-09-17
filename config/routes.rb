@@ -1,8 +1,9 @@
 DavarDialer::Application.routes.draw do
 
   resources :contact_lists
+  resources :sessions
   match 'login' => 'sessions#new', :as => :login
-  match 'logout' => 'sessions#destroy ', :as => :logout
+  match 'logout' => 'sessions#destroy', :as => :logout
 
 
   # The priority is based upon order of creation:

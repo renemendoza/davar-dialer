@@ -1,2 +1,15 @@
-<h1>Session#new</h1>
-<p>Find me in app/views/sessions/new.html.erb</p>
+<h3> Please login to your account </h3>
+
+<%= semantic_form_for @session do |form|%>
+
+    <%= form.inputs do %>
+      <%= form.semantic_errors :state %>
+      <%= form.input :username, :label => 'Username', :input_html => { :size => 20 } %>
+      <%= form.input :password, :label => 'Password', :input_html => { :size => 20 } %>
+
+    <% end %>
+    <%= form.buttons do %>
+      <li><button class="green" type="submit">Log In</button></li>
+    <% end %>
+
+<% end %>

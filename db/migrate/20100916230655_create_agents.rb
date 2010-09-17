@@ -6,7 +6,7 @@ class CreateAgents < ActiveRecord::Migration
       t.string :email
       t.string :crypted_password
       t.string :password_salt
-      t.string :persistance_token
+      t.string :persistence_token
       t.string :ring_to_destination
       t.string :language_settings
 
