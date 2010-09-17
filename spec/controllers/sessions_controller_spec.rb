@@ -117,7 +117,7 @@ describe SessionsController do
   describe "DELETE /sessions" do
     #LOGOUT
     before(:each) do
-      activate_authlogic
+      activate_authlogic  #we are already logged in
 
       @session = Session.create(Factory.build(:agent))
     end
