@@ -1,2 +1,9 @@
-<h1>Agents#new</h1>
-<p>Find me in app/views/agents/new.html.erb</p>
+<h3> Agent registration </h3>
+<h4>Please fill in the following details to begin using the application</h4>
+
+<%= semantic_form_for @agent do |form|%>
+  <%= render :partial => 'form', :locals => {:form => form } %>
+  <%= form.buttons do %>
+      <li><button type="submit">Register</button></li>
+  <% end %>
+<% end %>
