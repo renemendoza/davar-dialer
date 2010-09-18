@@ -1,0 +1,8 @@
+development:
+  ahn_url: druby://127.0.0.1:8888
+ 
+test:
+  ahn_url: druby://127.0.0.1:8888
+
+production:
+  ahn_url: druby://127.0.0.1:8888
