@@ -5,3 +5,4 @@ log/*.log
 tmp/**/*
 config/database.yml
 Gemfile.lock
+adhearsion/config/startup.rb

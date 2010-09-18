@@ -20,6 +20,8 @@ gem 'unicorn'
  gem 'compass'
  gem 'haml'
 
+ gem 'adhearsion' 
+
  group :development, :test, :cucumber do
   gem "autotest"
   gem 'capybara'
