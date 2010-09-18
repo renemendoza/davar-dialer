@@ -26,3 +26,6 @@ Factory.define :agent do |f|
   f.password "123456"
   f.password_confirmation  { |u| u.password }
 end
+
+Factory.define :agent_blank, :class => Agent do |f|
+end
