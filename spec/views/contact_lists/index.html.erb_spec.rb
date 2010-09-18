@@ -22,4 +22,8 @@ describe "/contact_lists/index" do
       rendered.should have_selector("a[href='#{contact_list_path(c)}']") 
     end
   end
+
+  after(:each) do
+    ContactList.delete_all
+  end
 end

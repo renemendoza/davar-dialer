@@ -52,6 +52,7 @@ describe ContactListsController do
     describe "POST /contact_lists with valid params" do
       before(:each) do 
         @params = {"list" => fixture_file_upload( "#{Rails.root}/features/assets/demo_contact_list.csv", 'text/csv'), "id" => "1" }
+        #@params = {"list" => fixture_file_upload( "#{Rails.root}/features/assets/demo_contact_list.csv", 'text/csv'), "id" => "1" }
 
       end
 
@@ -71,18 +72,20 @@ describe ContactListsController do
         flash[:notice].should_not be_nil
       end
 
+      it "flash error should be nil" do
+        do_post
+        flash[:error].should be_nil
+      end
+
       it "should redirect to the created contact list " do
         do_post
         #this is not beautiful
         response.should redirect_to(contact_list_url(ContactList.last.id))
       end
 
-
-      it "flash error should be nil" do
-        do_post
-        flash[:error].should be_nil
+      after(:each) do 
+        ContactList.delete_all
       end
-
 
 
     end
@@ -142,6 +145,10 @@ describe ContactListsController do
         do_get
         assigns[:contact_lists].should == [@contact_list]
       end
+
+      after(:each) do 
+        ContactList.delete_all
+      end
     end
 
     describe "GET /contact_lists/1" do
@@ -177,6 +184,14 @@ describe ContactListsController do
         assigns[:contact_list].should == @contact_list
       end
 
+      after(:each) do 
+        ContactList.delete_all
+      end
+
+    end
+
+    after(:each) do 
+      Agent.delete_all
     end
 
   end
