@@ -29,5 +29,6 @@ gem 'unicorn'
   gem 'factory_girl_rails'
   gem 'cucumber-rails'
   gem "cucumber"
+  gem "launchy"
   gem "rspec-rails", ">= 2.0.0.beta.20"
  end

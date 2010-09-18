@@ -1,8 +1,5 @@
 DavarDialer::Application.routes.draw do
 
-  get "new/edit"
-
-  get "new/index"
 
   resources :contact_lists
   resources :sessions
