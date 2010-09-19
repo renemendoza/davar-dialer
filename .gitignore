@@ -4,6 +4,7 @@ db/schema.rb
 log/*.log
 tmp/**/*
 config/database.yml
+config/app_config.yml
 Gemfile.lock
 adhearsion/config/startup.rb
-adhearsion/*.log
+adhearsion/log

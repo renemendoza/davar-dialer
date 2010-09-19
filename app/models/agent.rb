@@ -1,4 +1,5 @@
 class Agent < ActiveRecord::Base
+  include Telephony
   acts_as_authentic
   has_many :contact_lists, :foreign_key => :owner_id
   #after_create :automatic_login

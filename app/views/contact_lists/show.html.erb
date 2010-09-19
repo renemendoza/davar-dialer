@@ -1,7 +1,8 @@
 <h4> <%= @contact_list.list_file_name %> </h4>
 <ul class="contacts">
   <% @contact_list.contacts.each do |contact| %>
-    <li> <%= "#{contact.name} ---- #{contact.phone_number_1}" %> </li>
+    <li> <%= contact.name -%> ---- <%= link_to contact.phone_number_1, contacts_dial_path(contact) %> </li>
+
   <% end %>
 </ul>
 <h4> <%= link_to "Delete this contact list", contact_list_path(@contact_list), :method => :delete, :confirm => "Are you sure to delete this list?" %> </h4>

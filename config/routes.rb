@@ -1,6 +1,11 @@
 DavarDialer::Application.routes.draw do
 
 
+  #get "contacts/dial"
+  #get "contacts/dial/:id"
+
+  match 'contacts/dial/:id' => 'contacts#dial', :as => :contacts_dial
+
   resources :contact_lists
   resources :sessions
   resources :agents
