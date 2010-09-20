@@ -7,32 +7,90 @@
 // Import all the default blueprint modules so that we can access their mixins.
 @import blueprint
 @import "blueprint/liquid"
+@import "blueprint/fancy-type"
 
 @import "compass/css3/box-shadow"
 @import "compass/css3/border-radius"
+@import "compass/css3/text-shadow"
 @import "compass/utilities/general/min"
+@import "compass/utilities/links"
+@import "compass/utilities/lists/horizontal-list"
 // Combine the partials into a single screen stylesheet.
 @import partials/page
 @import partials/form
 @import partials/two_col
 @import partials/main
+@import partials/errors
 
 
 
 body
+  +fancy-type
+  +blueprint-typography(true)
   :background url("/images/header.png") repeat-x scroll center top #49C4E8
 
+
+
+div#header
+  +container
+  +min-height(100px)
+  :width 99%
+
+  div.name
+    +float-left
+    +column(4)
+    h2
+      :font-family "Trebuchet MS" 
+      :font-size 4em
+      :color white !important
+      :margin 0
+      :padding 0
+
+  div.menu
+    +float-right
+    padding: 10px
+    ul
+      +horizontal-list-container
+      +min-height(40px)
+      li
+        +horizontal-list-item
+        +text-shadow
+        :margin-left 20px
+        :font-weight bold
+        :font-family "Trebuchet MS" 
+        :font-size 1.5em
+        :letter-spacing 1px
+        :color white
+        :padding-bottom 0.4em
+        :border-bottom  0px solid #19D6F4
+
+
+      li a
+        +unstyled-link
+      li:hover
+        :border-bottom  6px solid #19D6F4
+        :cursor pointer
+      li.logout a
+        :color #FFC804 !important
+
+    div.language
+      :font-weight bold
+      :font-family "Trebuchet MS" 
+      :font-size 1.2em
+      :color white
+      a
+        +float-right
+        +unstyled-link
 
 div#main
   +container
   +box-shadow
   +border-radius(4px)
   +min-height(600px)
-  +min-width(680px)
-  :width 70% !important
+  +min-width(620px)
+  :width 720px !important
   :background-color white
   :padding 2em
-  :margin-top 110px
 
 
 
