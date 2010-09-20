@@ -12,6 +12,7 @@ DavarDialer::Application.routes.draw do
 
   match 'login' => 'sessions#new', :as => :login
   match 'logout' => 'sessions#destroy', :as => :logout
+  match 'register' => 'agents#new', :as => :register
 
 
   # The priority is based upon order of creation:
@@ -61,9 +62,7 @@ DavarDialer::Application.routes.draw do
   #     resources :products
   #   end
 
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => "welcome#index"
+   root :to => "contact_lists#index"
 
   # See how all your routes lay out with "rake routes"
 

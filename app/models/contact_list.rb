@@ -1,5 +1,6 @@
 class ContactList < ActiveRecord::Base
   has_attached_file :list
+  belongs_to :owner, :class_name => "Agent"
 
   has_many :contacts
 

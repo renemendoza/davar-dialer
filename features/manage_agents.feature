@@ -23,7 +23,7 @@ Feature: Manage Agents
 
   Scenario: Agent Update
     Given I am logged in as "rene" with password "1234"
-    When I follow "Change my settings"
+    When I follow "Settings"
       And I fill in "Callback Number" with "5619521007"
       And I press "Update"
     Then I should see "Agent settings updated."

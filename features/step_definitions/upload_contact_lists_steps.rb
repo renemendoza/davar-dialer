@@ -4,7 +4,7 @@ When /^I upload a file with (\d+) valid contacts$/ do |c|
 end
 
 Then /^I should see a list with (\d+) contacts$/ do |i|
-  page.should have_css("ul.contacts li", :count => i.to_i)
+  page.should have_css("table.contacts tbody tr", :count => i.to_i)
 end
 
 Then /^agent "([^"]*)" should have a new list with (\d+) new contacts$/ do |agent_username, i|

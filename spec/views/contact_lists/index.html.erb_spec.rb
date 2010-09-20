@@ -11,9 +11,6 @@ describe "/contact_lists/index" do
     render
   end
 
-  it "should say 'Your contact lists'" do
-    rendered.should include("Your contact lists")
-  end
 
   it "should include a link to add a new contact_list" do
     rendered.should have_selector("a[href='#{new_contact_list_path}']") 

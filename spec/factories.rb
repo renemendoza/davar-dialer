@@ -1,8 +1,17 @@
+Factory.define :agent do |f|
+  f.sequence(:name) {|n| "Johnny#{n}"}
+  f.sequence(:username) {|n| "john#{n}"}
+  f.sequence(:email) {|n| "johny_test#{n}@gmail.com"}
+  f.password "123456"
+  f.password_confirmation  { |u| u.password }
+end
+
 Factory.define :contact_list do |c| 
 end
 
 Factory.define :contact_list_with_uploaded_file, :class => ContactList do |c| 
   c.list  { fixture_file_upload( "#{Rails.root}/features/assets/demo_contact_list.csv", 'text/csv') }
+  c.owner {|owner| owner.association(:agent) }
 end
 
 def generate_nanpa_phone_number
@@ -19,13 +28,6 @@ end
 Factory.define :session do |s| 
 end
 
-Factory.define :agent do |f|
-  f.sequence(:name) {|n| "Johnny#{n}"}
-  f.sequence(:username) {|n| "john#{n}"}
-  f.sequence(:email) {|n| "johny_test#{n}@gmail.com"}
-  f.password "123456"
-  f.password_confirmation  { |u| u.password }
-end
 
 Factory.define :agent_blank, :class => Agent do |f|
 end

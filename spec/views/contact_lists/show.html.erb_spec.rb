@@ -12,8 +12,8 @@ describe "/contact_lists/show" do
     rendered.should include("demo_contact_list.csv")
   end
 
-  it "should include one li element for each contact" do
-    rendered.should have_selector("ul.contacts li", :count => @contact_list.contacts.size)
+  it "should include one row for each contact" do
+    rendered.should have_selector("table.contacts tbody tr", :count => @contact_list.contacts.size)
   end
 
   it "should include a link to add a new contact_list" do
@@ -24,10 +24,6 @@ describe "/contact_lists/show" do
     rendered.should have_selector("a[href='#{contact_list_path(@contact_list)}'][data-method='delete']") 
   end
 
-
-  it "should include a link for the contact_list index" do
-    rendered.should have_selector("a[href='#{contact_lists_path}']") 
-  end
 
   after(:each) do
     ContactList.delete_all

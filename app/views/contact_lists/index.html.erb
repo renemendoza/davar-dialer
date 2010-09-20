@@ -1,14 +1,26 @@
 <h3> Your contact lists </h3>
 
-<ul>
+<table class="contact_lists">
+  <thead>
+    <tr>
+      <th> Filename </th>
+      <th> Owner </th>
+      <th> Contact count </th>
+      <th> Date Uploaded </th>
+    </tr>
+  </thead>
+  <tbody>
   <% @contact_lists.each do |c| %>
-    <li> 
-    <%= link_to c.list_file_name, contact_list_path(c) -%> with (<%= c.contacts.count -%>) contacts 
-    </li>
+    <tr>
+      <td> <%= link_to c.list_file_name, contact_list_path(c) -%> with (<%= c.contacts.count -%>) contacts 
+      <td> <%= c.owner.name %> </td>
+      <td> <%= c.contacts.count %> </td>
+      <td> <%= c.created_at %> </td>
+    </tr>
   <% end %>
-</ul>
+  </tbody>
+</table>
 
 <h4> <%= link_to "Add a new contact list", new_contact_list_path %> </h4>
-<h4> <%= link_to "Change my settings", edit_agent_path(current_user) %> </h4>
 
 
