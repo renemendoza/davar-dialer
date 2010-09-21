@@ -12,10 +12,10 @@
   <tbody>
   <% @contact_lists.each do |c| %>
     <tr>
-      <td> <%= link_to c.list_file_name, contact_list_path(c) -%> with (<%= c.contacts.count -%>) contacts 
+      <td> <%= link_to c.list_file_name, contact_list_path(c) -%>  </td>
       <td> <%= c.owner.name %> </td>
       <td> <%= c.contacts.count %> </td>
-      <td> <%= c.created_at %> </td>
+      <td> <%= c.created_at.to_s(:short) %> </td>
     </tr>
   <% end %>
   </tbody>

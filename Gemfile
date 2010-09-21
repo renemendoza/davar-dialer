@@ -17,7 +17,8 @@ gem 'unicorn'
  gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'  #hmm
  #gem 'cancan'
  gem 'formtastic'
- gem 'compass'
+ gem 'compass', ">= 0.10.5"
+ gem 'fancy-buttons'
  gem 'haml'
 
  gem 'adhearsion' 

@@ -13,4 +13,74 @@ body.bp
   // Example:
   // .my-container
   //   text-align: left
+body
+  +blueprint-ie(true)
 
+div#main
+  :text-align left
+  :overflow visible
+
+div#header div.menu 
+  :text-align right
+
+div#header div.menu ul
+  :float right
+
+div#header div.menu ul li a
+  :color white
+  :text-decoration none
+
+div#header div.language
+  +push(4)
+  +float-right
+  :text-align right
+  :width 120px
+  :margin-top 20px
+
+div#header div.language a
+  :color white
+  :text-decoration none
+
+table.contact_lists thead  tr th
+  :background-color black !important
+  :color white
+  :text-transform uppercase
+  :letter-spacing 1px
+  :font-size 1.2em
+  :line-height 2em
+
+table.contact_lists tbody  tr
+  :font-size 1.2em
+  :line-height 2em
+
+table.contact_lists tbody  tr:hover
+  :cursor pointer
+
+table.contact_lists tbody  tr.odd
+  :background-color #ECFBFD
+
+
+
+
+table.contacts thead  tr th
+  :background-color black !important
+  :color white
+  :text-transform uppercase
+  :letter-spacing 1px
+  :font-size 1.2em
+  :line-height 2em
+
+table.contacts tbody  tr
+  :font-size 1.2em
+  :line-height 2em
+
+table.contacts tbody  tr:hover
+  :cursor pointer
+
+table.contacts tbody  tr.odd
+  :background-color #ECFBFD
+
+
+form.formtastic li input
+  :padding 0.1em
+  :height 30px

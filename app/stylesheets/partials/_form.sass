@@ -2,9 +2,41 @@
 // a class of "bp". This makes it easier to style
 // forms from scratch if you need to.
 
+@import partials/formtastic_base
+
 form.bp
   +blueprint-form
 
 
 form.formtastic fieldset > ol > li
   :overflow hidden !important
+
+
+=form_quick(!a,!b,!c)
+  +float-form(!a,!b,!c)
+  :padding 20px
+  li
+    :height 50px
+    input
+      :border 1px solid #D1EAF0
+      :background-color #F6FDFE
+      :font-size 1.6em
+      :padding 0.2em
+    label
+      :font-size 1.6em
+      :font-weight bold
+      :color #333333
+      :padding 0.2em
+ 
+  fieldset.buttons ol li
+    :height 70px
+    :float right !important
+
+form#new_session
+  +form-quick(38em,12em,10em)
+  :width 70%
+  :margin 6em
+  :border 1px solid #D1EAF0
+
+form.formtastic
+  +form_quick(56em,16em,18em)
