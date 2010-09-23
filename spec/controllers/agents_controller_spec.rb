@@ -76,9 +76,9 @@ describe AgentsController do
         flash[:error].should be_nil
       end 
 
-      it "should redirect to the contact list listing" do
+      it "should redirect to the login path (as agent is un-approved)" do
         do_post
-        response.should redirect_to(contact_lists_path)
+        response.should redirect_to(login_path)
       end
 
       after(:each) do 
