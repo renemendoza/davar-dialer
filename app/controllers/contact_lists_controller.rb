@@ -1,6 +1,7 @@
 class ContactListsController < ApplicationController
 
-  before_filter :require_valid_account
+  before_filter :require_admin_account, :only => [:new, :create]
+  before_filter :require_valid_account, :except => [:new, :create]
 
   def index
     @contact_lists =  current_user.contact_lists

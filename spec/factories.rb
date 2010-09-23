@@ -4,6 +4,7 @@ Factory.define :agent do |f|
   f.sequence(:email) {|n| "johny_test#{n}@gmail.com"}
   f.password "123456"
   f.password_confirmation  { |u| u.password }
+  f.admin false
 end
 
 Factory.define :contact_list do |c| 

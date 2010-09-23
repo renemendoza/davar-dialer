@@ -7,7 +7,7 @@ Then /^I should see a list with (\d+) contacts$/ do |i|
   page.should have_css("table.contacts tbody tr", :count => i.to_i)
 end
 
-Then /^agent "([^"]*)" should have a new list with (\d+) new contacts$/ do |agent_username, i|
+Then /^"([^"]*)" should have a new list with (\d+) new contacts$/ do |agent_username, i|
 #"
   agent = Agent.find_by_username(agent_username)
   agent.contact_lists.last.contacts.count.should == i.to_i

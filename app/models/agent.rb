@@ -6,6 +6,8 @@ class Agent < ActiveRecord::Base
   #has_many :assigned_contacts, :through => :contact_lists, :source => :contacts
   #after_create :automatic_login
   #validations?
+  attr_protected :admin
+
 
 #private
 #  def automatic_login
