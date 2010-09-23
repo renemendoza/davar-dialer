@@ -1,2 +1,22 @@
-<h1>Agents#index</h1>
-<p>Find me in app/views/agents/index.html.erb</p>
+<h3> Agents </h3>
+
+<table class="agents">
+  <thead>
+    <tr>
+      <th> Name </th>
+      <th> CallBack </th>
+      <th> Status </th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @agents.each do |a| %>
+    <tr>
+      <td> <%= a.name %> <%= link_to "(edit)", edit_agent_path(a) %> </td>
+      <td> <%= a.ring_to_destination %> </td>
+      <%= agent_status(a) %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<h6 class="buttons"> <a href="<%= new_contact_list_path %>" class="button">Add a new contact list </a> </h6>
+<h6 class="buttons"> <a href="<%= new_agent_path %>" class="button">Add a new agent</a> </h6>
