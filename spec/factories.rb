@@ -12,6 +12,8 @@ end
 Factory.define :contact_list_with_uploaded_file, :class => ContactList do |c| 
   c.list  { fixture_file_upload( "#{Rails.root}/features/assets/demo_contact_list.csv", 'text/csv') }
   c.owner {|owner| owner.association(:agent) }
+  c.contacts {|contacts| [contacts.association(:contact)] }
+
 end
 
 def generate_nanpa_phone_number

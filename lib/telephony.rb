@@ -1,11 +1,27 @@
 module Telephony
 
-  def dial(contact)
-    simple_dial(contact)
+  class TelephonyError < RuntimeError
+  end
 
-    #use a flag to choose between simple_dial and dial with amd
-    #else
-    #amd_dial(contact)
+  def dial(contact)
+
+
+    begin
+      #use a flag to choose between simple_dial and dial with amd
+      #else
+      #amd_dial(contact)
+      #
+      simple_dial(contact)
+
+
+    rescue StandardError => ex
+      if ex.is_a? DRb::DRbConnError
+        raise TelephonyError, "Connection to Adhearsion via DRb failed:  #{ex.message}"
+      else
+        raise TelephonyError, "An error has ocurred:  #{ex.message}"
+      end
+    end
+
   end
 
   def simple_dial(contact)
@@ -17,14 +33,13 @@ module Telephony
     
     channel = "Local/#{number_to}@#{context}/n"
       
-    #this will return the result and we need tests for this
-    AHN.originate({
-        :channel   => channel,    #the remote
-        :context   => context,    #the local
-        :exten   => number_from, 
-        :priority  => 1,
-        :callerid  => number_to,
-        :async => 'true' })
+      AHN.originate({
+          :channel   => channel,    #the remote
+          :context   => context,    #the local
+          :exten   => number_from, 
+          :priority  => 1,
+          :callerid  => number_to,
+          :async => 'true' })
   end
 
   def amd_dial(contact)
