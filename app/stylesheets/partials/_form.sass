@@ -11,6 +11,8 @@ form.bp
 form.formtastic fieldset > ol > li
   :overflow hidden !important
 
+form.formtastic fieldset > ol > li.file
+  :overflow visible !important
 
 =form_quick(!a,!b,!c)
   +float-form(!a,!b,!c)
@@ -22,6 +24,9 @@ form.formtastic fieldset > ol > li
       :background-color #F6FDFE
       :font-size 1.6em
       :padding 0.2em
+    input[type="file"]
+      :width 8em !important
+      :size 8
     label
       :font-size 1.6em
       :font-weight bold
