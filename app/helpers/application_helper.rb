@@ -5,8 +5,8 @@ module ApplicationHelper
   end 
 
   def content_for_users(&block)
-    unless current_user.admin?
-      yield if current_user 
+    if current_user
+      yield unless current_user.admin?
       return ''
     end
   end 
@@ -17,7 +17,9 @@ module ApplicationHelper
   end 
 
   def content_for_admin(&block)
-    yield if current_user.admin?
-    return ''
+    if current_user
+      yield if current_user.admin?
+      return ''
+    end
   end 
 end
