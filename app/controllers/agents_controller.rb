@@ -24,7 +24,7 @@ class AgentsController < ApplicationController
   end
 
   def edit
-    @agent = current_user  #except when we want an admin editing other dudes
+    @agent = current_user.admin? ? Agent.agents.find(params[:id]) : current_user
   end
 
   def update
