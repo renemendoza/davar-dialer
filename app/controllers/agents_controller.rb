@@ -1,8 +1,10 @@
 class AgentsController < ApplicationController
-  #should protect all actions except new and create
-  before_filter :require_valid_account, :except => [:new, :create]
- 
+  before_filter :require_valid_account, :except => [:new, :create, :index]
+  before_filter :require_admin_or_visitor_account, :only => [:new, :create]
+  before_filter :require_admin_account, :only => [:index]
+  #
   def index
+    @agents = Agent.agents
   end
 
   def new

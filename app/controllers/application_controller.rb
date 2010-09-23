@@ -35,6 +35,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_admin_or_visitor_account
+    unless current_user.nil? || current_user.admin?
+      flash[:error] = "You are not allowed to see this page"
+      redirect_to contact_lists_url
+      return false
+    end
+  end
+
   def store_location
     #session[:return_to] = request.request_uri
     session[:return_to] = request.fullpath

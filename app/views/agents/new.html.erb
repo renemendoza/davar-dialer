@@ -1,9 +1,18 @@
-<h3> Agent registration </h3>
-<h4>Please fill in the following details to begin using the application</h4>
-
+<% content_for_admin do %>
+  <h3> New Agent </h3>
+<% end %>
+<% content_for_visitors do %>
+  <h3> Agent registration </h3>
+  <h4>Please fill in the following details to begin using the application</h4>
+<% end %>
 <%= semantic_form_for @agent do |form|%>
   <%= render :partial => 'form', :locals => {:form => form } %>
   <%= form.buttons do %>
+    <% content_for_admin do %>
+      <li><button type="submit">Create</button></li>
+    <% end %>
+    <% content_for_visitors do %>
       <li><button type="submit">Register</button></li>
+    <% end %>
   <% end %>
 <% end %>
