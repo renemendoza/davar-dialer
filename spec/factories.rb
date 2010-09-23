@@ -5,6 +5,7 @@ Factory.define :agent do |f|
   f.password "123456"
   f.password_confirmation  { |u| u.password }
   f.admin false
+  f.approved true
 end
 
 Factory.define :contact_list do |c| 

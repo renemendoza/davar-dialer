@@ -1,10 +1,9 @@
 DavarDialer::Application.routes.draw do
 
 
-  #get "contacts/dial"
-  #get "contacts/dial/:id"
 
   match 'contacts/dial/:id' => 'contacts#dial', :as => :contacts_dial
+  match 'agents/approve/:id' => 'agents#approve', :as => :agents_approve
 
   resources :contact_lists
   resources :sessions
