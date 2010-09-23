@@ -21,6 +21,7 @@
   </tbody>
 </table>
 
-<h6 class="buttons"> <a href="<%= new_contact_list_path %>" class="button">Add a new contact list </a> </h6>
-
+<%= content_for_admin do %>
+  <h6 class="buttons"> <a href="<%= new_contact_list_path %>" class="button">Add a new contact list </a> </h6>
+<% end %>
 
