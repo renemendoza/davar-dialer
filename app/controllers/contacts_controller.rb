@@ -4,6 +4,11 @@ class ContactsController < ApplicationController
   rescue_from Telephony::TelephonyError, :with => :telephony_error
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found_error
 
+
+  def index
+    @contacts = current_user.assigned_contacts
+  end
+
   def dial
     @contact = current_user.contacts.find(params[:id])    #nicely scoped
     current_user.dial(@contact)   
