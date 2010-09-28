@@ -88,15 +88,15 @@ describe AgentsController do
 
   end
 
+
   describe "authenticated users with admin privileges" do 
-#    before(:each) do 
-#    end
+    before(:each) do 
+      activate_authlogic  #we are logged in
+      @session = Session.create(Factory(:agent, :admin => true))
+    end
 
     describe "GET /agents/" do
       before(:each) do 
-        activate_authlogic  #we are logged in
-        @agent = Factory.build(:agent, :admin => true)
-        @session = Session.create(@agent)
         @agents = [ Factory(:agent) ]
         Agent.stub!(:agents).and_return(@agents)
       end
@@ -133,16 +133,18 @@ describe AgentsController do
 
     end
 
-    describe "GET /agents/edit/1" do
-      before(:each) do 
-        activate_authlogic  #we are logged in
-        @agent = Factory(:agent)
-        @session = Session.create(@agent)
 
+    describe "GET /agents/edit/5" do
+      #editing another agent profile
+      before(:each) do 
+        @agent = Factory(:agent, :id => 5, :admin => nil)
+        @current_user = @session.record
+        controller.stub!(:current_user).and_return(@current_user)
+        Agent.agents.stub(:find).with("5").and_return(@agent)
       end
 
       def do_get
-        get :edit, :id => @agent
+        get :edit, :id => "5"
       end
 
       it "should be succesful" do
@@ -155,16 +157,10 @@ describe AgentsController do
         response.should render_template("edit")
       end
 
-      #it "should load the requested agent" do
-        #do_get
-        #can not test properly at this time due to scoping
-      #end
-
       it "should assign the requested agent for the view" do
         do_get
         assigns[:agent].should == @agent
       end
-
 
       after(:each) do 
         @session.destroy
@@ -172,11 +168,10 @@ describe AgentsController do
       end
 
     end
+
     describe "PUT /agents/edit/1" do
       before(:each) do 
-        activate_authlogic  #we are logged in
         @agent = Factory(:agent)
-        @session = Session.create(@agent)
         Agent.stub!(:find).and_return(@agent)
         @agent.stub!(:update_attributes).and_return(true)
 
@@ -206,9 +201,49 @@ describe AgentsController do
         flash[:error].should be_nil
       end 
 
-      it "should redirect to the contact_lists_path" do
+      it "should redirect to the agents_path" do
         do_update
-        response.should redirect_to(contact_lists_url)
+        response.should redirect_to(agents_url)
+      end
+
+      after(:each) do 
+        @session.destroy
+        Agent.delete_all
+      end
+
+    end
+
+  end
+
+  describe "authenticated users in general" do 
+
+    describe "GET /agents/edit/1" do
+      #editing their own profile
+      before(:each) do 
+        activate_authlogic  #we are logged in
+        @agent = Factory(:agent, :id => 1)
+        @session = Session.create(@agent)
+        @current_user = @session.record
+        controller.stub!(:current_user).and_return(@current_user)
+      end
+
+      def do_get
+        get :edit, :id => "1"
+      end
+
+      it "should be succesful" do
+        do_get
+        response.should be_success
+      end
+
+      it "should render the edit template" do
+        do_get
+        response.should render_template("edit")
+      end
+
+      it "should assign the requested agent for the view" do
+        do_get
+        assigns[:agent].should == @agent
       end
 
       after(:each) do 
@@ -302,6 +337,54 @@ describe AgentsController do
 
     end
 
+    describe "GET /agents/edit/5" do
+      #editing another agent profile is not allowed for agents
+      before(:each) do 
+        activate_authlogic  #we are logged in
+        @session = Session.create(Factory(:agent, :id => 1))
+        @agent = Factory(:agent, :id => 5, :admin => nil)
+        @current_user = @session.record
+        controller.stub!(:current_user).and_return(@current_user)
+        Agent.agents.stub(:find).with("5").and_return(@agent)
+      end
+
+      def do_get
+        get :edit, :id => "5"
+      end
+
+      it "should not be succesful" do
+        do_get
+        response.should_not be_success
+      end
+
+      it "should not render the edit template" do
+        do_get
+        response.should_not render_template("edit")
+      end
+
+      it "should redirect" do
+        do_get
+        response.should be_redirect
+      end
+
+      it "flash error should not be nil" do
+        do_get
+        flash[:error].should_not be_nil
+      end
+
+      it "should not assign the requested agent for the view" do
+        do_get
+        assigns[:agent].should_not == @agent
+      end
+
+
+      after(:each) do 
+        @session.destroy
+        Agent.delete_all
+      end
+
+    end
+
     describe "POST /agents" do
  
       before(:each) do 
@@ -337,6 +420,51 @@ describe AgentsController do
       end
     end
 
+    describe "PUT /agents/edit/1" do
+      before(:each) do 
+        activate_authlogic  #we are logged in
+        @agent = Factory(:agent)
+        @session = Session.create(@agent)
+        Agent.stub!(:find).and_return(@agent)
+        @agent.stub!(:update_attributes).and_return(true)
+
+      end
+
+      def do_update
+        put :update, :id => @agent
+      end
+
+      it "should load the requested agent" do
+        Agent.should_receive(:find).and_return(@agent)
+        do_update
+      end
+
+      it "should update the agent's attributes" do
+        @agent.should_receive(:update_attributes).and_return(true)
+        do_update
+      end
+
+      it "flash notice should not be nil" do
+        do_update
+        flash[:notice].should_not be_nil
+      end   
+
+      it "flash error should be nil" do
+        do_update
+        flash[:error].should be_nil
+      end 
+
+      it "should redirect to the contacts_url (agents home)" do
+        do_update
+        response.should redirect_to(contacts_url)
+      end
+
+      after(:each) do 
+        @session.destroy
+        Agent.delete_all
+      end
+
+    end
 
   end
 end

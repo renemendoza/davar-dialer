@@ -24,7 +24,16 @@ class AgentsController < ApplicationController
   end
 
   def edit
-    @agent = current_user.admin? ? Agent.agents.find(params[:id]) : current_user
+    if current_user.id.to_s == params[:id]
+      @agent = current_user
+    else
+      if current_user.admin?
+        @agent = Agent.agents.find(params[:id]) 
+      else
+        require_admin_or_visitor_account   ##this would be sweet
+      end
+    end
+
   end
 
   def update
@@ -57,16 +66,6 @@ class AgentsController < ApplicationController
   end
 
   private
-  def admin_agent_redirect_path
-    if current_user and current_user.admin?
-      agents_path   
-    elsif current_user 
-      contact_lists_path   
-    else
-      login_path   
-      #if not logged in then
-    end
-  end
 
   def admin_agent_create_flash_notice_msg
     if current_user and current_user.admin?
