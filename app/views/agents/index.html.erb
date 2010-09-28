@@ -1,11 +1,12 @@
 <h3> Agents </h3>
 
-<table class="agents">
+<table class="short_first agents">
   <thead>
     <tr>
       <th> Name </th>
       <th> CallBack </th>
       <th> Status </th>
+      <th> Assigned Contacts </th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +15,7 @@
       <td> <%= a.name %> <%= link_to "(edit)", edit_agent_path(a) %> </td>
       <td> <%= a.ring_to_destination %> </td>
       <%= agent_status(a) %>
+      <td> <%= a.assigned_contacts.count %> </td>
     </tr>
   <% end %>
   </tbody>
