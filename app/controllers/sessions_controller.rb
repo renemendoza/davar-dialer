@@ -8,8 +8,7 @@ class SessionsController < ApplicationController
     @session = Session.new(params[:session])
     if @session.save
       flash[:notice] = "Successfully logged in"
-
-      redirect_to contact_lists_path
+      redirect_to admin_agent_redirect_path
     else
       flash.now[:error] = "There was an error while trying to log you in"
       render :action => 'new'
