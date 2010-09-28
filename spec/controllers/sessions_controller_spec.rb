@@ -3,48 +3,53 @@ require 'spec_helper'
 
 describe SessionsController do
 
-  describe "GET /login" do
-    before(:each) do 
-      activate_authlogic
-      @session = Factory.build(:session)
-      Session.stub!(:new).and_return(@session)
-    end
+  describe "for all users" do 
+    describe "GET /login" do
+      before(:each) do 
+        activate_authlogic
+        @session = Factory.build(:session)
+        Session.stub!(:new).and_return(@session)
+      end
 
-    def do_get
-      get :new
-    end
+      def do_get
+        get :new
+      end
 
-    it "should be succesful" do
-      do_get
-      response.should be_success
-    end
+      it "should be succesful" do
+        do_get
+        response.should be_success
+      end
 
-    it "should render the new template" do
-      do_get
-      response.should render_template("new")
-    end
+      it "should render the new template" do
+        do_get
+        response.should render_template("new")
+      end
 
-    it "should create a new session" do
-      Session.should_receive(:new).and_return(@contact_list)
-      do_get
-    end
+      it "should create a new session" do
+        Session.should_receive(:new).and_return(@contact_list)
+        do_get
+      end
 
-    it "should not save the new session" do
-      @session.should_not_receive(:save)
-      do_get
-    end
+      it "should not save the new session" do
+        @session.should_not_receive(:save)
+        do_get
+      end
 
-    it "should assign the new session for the view" do
-      do_get
-      assigns[:session].should == @session
-    end
+      it "should assign the new session for the view" do
+        do_get
+        assigns[:session].should == @session
+      end
 
+    end
   end
+
+
+
 
   describe "POST /sessions  " do
   #LOGIN
 
-    describe "with valid credentials" do
+    describe "with valid credentials (agent privileges)" do
       before(:each) do 
         #activate_authlogic
 
@@ -52,7 +57,6 @@ describe SessionsController do
         @params = {"username" => @agent.username, "password" => @agent.password}
 
         @session = Factory.build(:session)
-        #Session.stub(:new).with(@params) { @session }
       end
 
       def do_post
@@ -75,9 +79,43 @@ describe SessionsController do
         flash[:error].should be_nil
       end 
 
-      it "should redirect to the contact list listing" do
+      it "should redirect to the contacts listing" do
         do_post
-        response.should redirect_to(contact_lists_path)
+        response.should redirect_to(contacts_path)
+      end
+    end
+
+    describe "with valid credentials (admin privileges)" do
+      before(:each) do 
+        @agent = Factory(:agent, :admin => true)
+        @params = {"username" => @agent.username, "password" => @agent.password}
+
+        @session = Factory.build(:session)
+      end
+
+      def do_post
+        post :create, :session => @params
+      end
+
+      it "should create a new session from valid credentials " do
+        Session.should_receive(:new).with(@params).and_return(@session)
+        @session.should_receive(:save)
+        do_post
+      end
+
+      it "flash notice should not be nil" do
+        do_post
+        flash[:notice].should_not be_nil
+      end   
+
+      it "flash error should be nil" do
+        do_post
+        flash[:error].should be_nil
+      end 
+
+      it "should redirect to the agents listing" do
+        do_post
+        response.should redirect_to(agents_path)
       end
     end
 
