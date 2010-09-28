@@ -2,16 +2,25 @@ DavarDialer::Application.routes.draw do
 
 
 
+  match 'contact_lists/assign' => 'contact_lists#assign', :as => :contact_lists_assign
+
   match 'contacts/dial/:id' => 'contacts#dial', :as => :contacts_dial
+  #post 'contacts/assign'
+  #post 'contact_lists/assign'
+
+
   match 'agents/approve/:id' => 'agents#approve', :as => :agents_approve
 
-  resources :contact_lists
-  resources :sessions
-  resources :agents
+#  match 'contact_lists/assign/:id' => 'contact_lists#assign', :as => :contact_lists_assign
 
   match 'login' => 'sessions#new', :as => :login
   match 'logout' => 'sessions#destroy', :as => :logout
   match 'register' => 'agents#new', :as => :register
+
+  resources :contact_lists
+  resources :contacts
+  resources :sessions
+  resources :agents
 
 
   # The priority is based upon order of creation:
