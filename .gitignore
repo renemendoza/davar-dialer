@@ -8,3 +8,4 @@ config/app_config.yml
 Gemfile.lock
 adhearsion/config/startup.rb
 adhearsion/log
+public/stylesheets/compiled
