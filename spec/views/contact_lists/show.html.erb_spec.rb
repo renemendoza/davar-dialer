@@ -24,9 +24,14 @@ describe "/contact_lists/show" do
     rendered.should have_selector("a[href='#{contact_list_path(@contact_list)}'][data-method='delete']") 
   end
 
+  it "should include a link to assign this list to an agent" do
+    rendered.should have_selector("a[href='#{edit_contact_list_path(@contact_list)}']") 
+  end
+
 
   after(:each) do
     ContactList.delete_all
+    Contact.delete_all
   end
 
 
