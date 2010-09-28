@@ -1,10 +1,9 @@
 class ContactListsController < ApplicationController
 
-  before_filter :require_admin_account, :only => [:new, :create]
-  before_filter :require_valid_account, :except => [:new, :create]
+  before_filter :require_admin_account
 
   def index
-    @contact_lists =  current_user.contact_lists
+    @contact_lists =  ContactList.all
   end
 
   def new
@@ -24,6 +23,29 @@ class ContactListsController < ApplicationController
   end
 
   def show
-    @contact_list =  current_user.contact_lists.find(params[:id])
+    @contact_list =  ContactList.find(params[:id]) #no need to scope
   end
+
+  def edit   #could be renamed as select or assign or something using the rails routing
+    @contact_list =  ContactList.find(params[:id]) #no need to scope
+    @agents = Agent.approved.agents
+  end
+
+  def update
+    begin
+      if i = ContactList.assign_contacts(params[:contacts])
+        flash[:notice] = "#{i} Contacts assigned"
+        redirect_to contact_lists_path
+      end
+    rescue => e
+      #log this?
+      flash[:error] = "There was an error assigning the requested contact list "
+      redirect_to edit_contact_list_path(params[:id])
+    end
+  end
+
+  #huge ass spec :S
+  #
+  #
+
 end
