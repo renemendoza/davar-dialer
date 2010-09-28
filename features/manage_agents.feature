@@ -19,7 +19,7 @@ Feature: Manage Agents
       And I fill in "Confirm your Password" with "1234"
       And I fill in "Callback Number" with "5619521007"
       And I press "Register"
-    Then I should see "New agent created."
+    Then I should see "Your account has been registered. It will be reviewed for activation shortly"
 
   Scenario: Agent Update
     Given I am logged in as "rene" with password "1234"

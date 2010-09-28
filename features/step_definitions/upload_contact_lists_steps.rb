@@ -1,4 +1,5 @@
 When /^I upload a file with (\d+) valid contacts$/ do |c|
+  visit new_contact_list_url
   attach_file("contact_list[list]", File.join(::Rails.root.to_s, "features/assets", "demo_contact_list.csv") )
   click_button "Create"
 end
