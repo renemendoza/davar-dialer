@@ -1,21 +1,27 @@
 <h3> Your contact lists </h3>
 
-<table class="contact_lists">
+<table class="short_first contact_lists">
   <thead>
     <tr>
       <th> Filename </th>
-      <th> Owner </th>
-      <th> Contact count </th>
+      <th> Uploader </th>
+      <th> Contacts count </th>
+      <th> Assigned </th>
+      <th> Remaining </th>
       <th> Date Uploaded </th>
+      <th> &nbsp; </th>
     </tr>
   </thead>
   <tbody>
   <% @contact_lists.each do |c| %>
     <tr>
-      <td> <%= link_to c.list_file_name, contact_list_path(c) -%>  </td>
+      <td> <%= link_to c.list_file_name, contact_list_path(c) -%>   </td>
       <td> <%= c.owner.name %> </td>
       <td> <%= c.contacts.count %> </td>
+      <td> <%= c.assigned_contacts.count %> </td>
+      <td> <%= c.unassigned_contacts.count %> </td>
       <td> <%= c.created_at.to_s(:short) %> </td>
+      <td>  <%= link_to "Assign", edit_contact_list_path(c), :class => "button_small_yellow" %></td>
     </tr>
   <% end %>
   </tbody>

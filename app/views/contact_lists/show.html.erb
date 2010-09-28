@@ -1,29 +1,34 @@
 <h3> Contact List Details </h3>
-<h4> <%= @contact_list.list_file_name %> </h4>
+<%= @contact_list.list_file_name %> 
 <%= @contact_list.created_at.to_s(:short) %> 
 
-<table class="contacts">
-  <thead>
-    <tr>
-      <th> Name </th>
-      <th> Phone Number </th>
-      <th> &nbsp; </th>
-      <th> Status </th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @contact_list.contacts.each do |contact| %>
-    <tr>
-      <td> <%= contact.name %> </td>
-      <td> <%= link_to contact.phone_number_1, contacts_dial_path(contact) %></td>
-      <td> &nbsp; </td>
-      <td> &nbsp; </td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+  <h4> Contacts </h4>
+  <table class="short_first contacts">
+    <thead>
+      <tr>
+        <th> Name </th>
+        <th> Phone Number </th>
+        <th> &nbsp; </th>
+        <th> Assigned To </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @contact_list.contacts.each do |contact| %>
+      <tr>
+        <td> <%= contact.name %> </td>
+        <td> <%= contact.phone_number_1 %></td>
+        <td> &nbsp; </td>
+        <td> <%= contact_status(contact) %> </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 
-
-<h6> <%= link_to "Delete this contact list", contact_list_path(@contact_list), :method => :delete, :confirm => "Are you sure to delete this list?", :class => "button red " %>
- <%= link_to "Add a new contact list", new_contact_list_path, :class => "button" %> </h6>
+  <h6> <%= link_to "Assign to agent", edit_contact_list_path(@contact_list), :class => "button" %>  </h6>
+  <br style="clear:both"/>
+  <hr style="margin-bottom:3em; margin-top:3em;"/>
+  <h6> 
+    <%= link_to "Delete this contact list", contact_list_path(@contact_list), :method => :delete, :confirm => "Are you sure to delete this list?", :class => "button red " %>
+    <%= link_to "Add a new contact list", new_contact_list_path, :class => "button" %>  
+  </h6>
 

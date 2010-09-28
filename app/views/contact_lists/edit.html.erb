@@ -1,0 +1,65 @@
+<h3> Contact List Assignment </h3>
+<%= @contact_list.list_file_name %> 
+<%= @contact_list.created_at.to_s(:short) %> 
+
+  <h4> Contacts </h4>
+<%= form_for(@contact_list) do |contact_list_form|%>
+  <table class="short_first contacts">
+    <thead>
+      <tr>
+        <th> Name </th>
+        <th> Phone Number </th>
+        <th> &nbsp; </th>
+        <th> Status </th>
+        <th> Assigned To </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @contact_list.contacts.each do |contact| %>
+      <tr>
+        <td> 
+          <input type="checkbox" id="contacts_<%= contact.id -%>" name="contacts[id][]" value=<%= contact.id -%> > 
+          <label for="contacts_<%= contact.id -%>"> <%= contact.name %> </label>
+        </td>
+        <td> <%= contact.phone_number_1 %></td>
+        <td> &nbsp; </td>
+        <td> &nbsp; </td>
+        <td> <%= contact_status(contact) %> </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <br style="clear:both"/>
+  <hr style="margin-bottom:3em; margin-top:3em;"/>
+  <h4> Available Agents </h4>
+  <table class="assign agents">
+    <thead>
+      <tr>
+        <th> Name </th>
+        <th> &nbsp; </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @agents.each do |agent| %>
+      <tr>
+        <td> 
+          <input type="radio" id="contacts_assigned_to_<%= agent.id -%>" name="contacts[assigned_to]" value=<%= agent.id -%> > 
+          <label for="contacts_assigned_to_<%= agent.id -%>"> <%= agent.name %> </label>
+        <td> &nbsp; </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+    <h6>
+      <button type="submit" >Assign to agent</button> 
+    </h6>
+<%end %>
+<br style="clear:both"/>
+<hr style="margin-bottom:3em; margin-top:6em;"/>
+
+  <h6> 
+    <%= link_to "Delete this contact list", contact_list_path(@contact_list), :method => :delete, :confirm => "Are you sure to delete this list?", :class => "button red " %>
+    <%= link_to "Add a new contact list", new_contact_list_path, :class => "button" %>  
+  </h6>
