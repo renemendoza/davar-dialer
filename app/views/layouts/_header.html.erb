@@ -6,9 +6,12 @@
       <ul>
         <%= content_for_admin do %>
           <li > <%= link_to "Agents", agents_path %> </li>
+          <li > <%= link_to "Contact Lists", contact_lists_path %> </li>
+        <% end %>
+        <%= content_for_users do %>
+          <li > <%= link_to "Dialer", contacts_path %> </li>
         <% end %>
         <%= content_for_users_or_admin do %>
-          <li > <%= link_to "Contact Lists", contact_lists_path %> </li>
           <li > <%= link_to "Settings", edit_agent_path(current_user) %> </li>
           <li class="logout"> <%= link_to "Logout", logout_path %> </li>
         <% end %>
