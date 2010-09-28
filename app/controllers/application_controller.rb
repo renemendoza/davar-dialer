@@ -29,8 +29,11 @@ class ApplicationController < ActionController::Base
   def require_admin_account
     unless current_user && current_user.admin?
       flash[:error] = "You are not allowed to see this page"
-      #change this to warning
-      redirect_to contact_lists_url
+      if current_user
+        redirect_to contacts_url 
+      else
+        redirect_to login_path
+      end
       return false
     end
   end
@@ -38,7 +41,7 @@ class ApplicationController < ActionController::Base
   def require_admin_or_visitor_account
     unless current_user.nil? || current_user.admin?
       flash[:error] = "You are not allowed to see this page"
-      redirect_to contact_lists_url
+      redirect_to contacts_url
       return false
     end
   end
@@ -46,5 +49,16 @@ class ApplicationController < ActionController::Base
   def store_location
     #session[:return_to] = request.request_uri
     session[:return_to] = request.fullpath
+  end
+
+  def admin_agent_redirect_path
+    if current_user and current_user.admin?
+      agents_path   
+    elsif current_user 
+      contacts_path   
+    else
+      login_path   
+      #if not logged in then
+    end
   end
 end
