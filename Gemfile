@@ -10,12 +10,15 @@ gem 'mysql2'
 
 gem 'unicorn'
 
+gem 'mongrel'
+
 # Deploy with Capistrano
 # gem 'capistrano'
 
 # gem 'authlogic'
  gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'  #hmm
  #gem 'cancan'
+ gem 'redis'
  gem 'formtastic'
  gem 'compass', ">= 0.10.5"
  gem 'fancy-buttons'
