@@ -6,4 +6,11 @@
     <%= form.input :password_confirmation, :label => 'Confirm your Password', :input_html => { :size => 20 } %>
     <%= form.input :ring_to_destination, :label => 'Callback Number', :input_html => { :size => 20 } %>
 
+    <li id="agent_use_amd_input" class="boolean optional">
+      <%= label("agent", "use_amd", "Detect Answering Machines?") -%>
+      <%= check_box("agent", "use_amd") -%>
+    </li>
+
+    <%= form.input :trunk, :label => 'Send calls with another Trunk', :input_html => { :size => 20 }, :hint => "Change this field to use a different trunk from the default." %>
+
   <% end %>
