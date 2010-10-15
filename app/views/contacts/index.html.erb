@@ -1,5 +1,7 @@
 <h3> Dialer </h3>
 <h4> Your Assigned Contacts (<%=@contacts.count-%>)</h4>
+<h5> Answering Machine Detection is <%= amd_status(current_user) -%> </h5>
+
   <table class="short_first contacts">
     <thead>
       <tr>
