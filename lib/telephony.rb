@@ -3,15 +3,26 @@ module Telephony
   class TelephonyError < RuntimeError
   end
 
+  #ami
+  ResponseCodes =  {
+    "0" => "do_not_exist",
+    "1" => "no_answer",
+    "3" => "ringing_no_answer",
+    "4" => "answer",
+    "5" => "busy",
+    "8" => "congested"
+  }  
+
+
   def dial(contact)
 
-
     begin
-      #use a flag to choose between simple_dial and dial with amd
-      #else
-      #amd_dial(contact)
-      #
-      simple_dial(contact)
+      if use_amd?
+        #amd_dial(contact)
+        simple_dial(contact)
+      else
+        simple_dial(contact)
+      end
 
 
     rescue StandardError => ex
@@ -24,24 +35,37 @@ module Telephony
 
   end
 
+
+
   def simple_dial(contact)
     number_to = contact.phone_number_1   #hmm smells like coupling?
-    number_from = ring_to_destination
 
-    context=APP_CONFIG[:simple_dial_context]
-    
-    
-    channel = "Local/#{number_to}@#{context}/n"
+    trunk=APP_CONFIG[:dialer_trunk]
+    context=APP_CONFIG[:dialer_context]
+
+    channel = "#{trunk}/1#{number_to}"  #hardcoding US/CAN style dialing :S
+
+    auto_call = contact.auto_calls.build({:contact_id => contact.id, :agent_id => self.id, :phone_number => number_to})
+
+    auto_call.save
       
-      AHN.originate({
+    res = AHN.originate({
           :channel   => channel,    #the remote
           :context   => context,    #the local
-          :exten   => number_from, 
+          :exten   => "s", 
           :priority  => 1,
           :callerid  => number_to,
+          :timeout => 30000,
+          :variable => "auto_call_id=#{auto_call.id}",
           :async => 'true' })
+
+    #store channel_a, channel_b ?
+    auto_call.action_id = res.headers["ActionID"]
+    auto_call.save
   end
 
+#sandwich code example lets refactor
+  
   def amd_dial(contact)
     context=APP_CONFIG[:amd_dial_context]
     #this is harder
@@ -49,6 +73,4 @@ module Telephony
 
 
 end
-  #irb(main):010:0> res.headers
-  #=> {"Message"=>"Originate successfully queued", "ActionID"=>"XqdqhZZq-8O5V-A9IP-wjAI-RdRnCRmPK8PS"}
 
