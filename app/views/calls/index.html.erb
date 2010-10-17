@@ -1,0 +1,31 @@
+<h3> Call History </h3>
+<h4> <%= @contact.name -%> - <%= @contact.phone_number_1 -%></h4>
+
+  <table class="short_first calls">
+    <thead>
+      <tr>
+        <th> Call Time </th>
+        <th> Duration </th>
+        <th> Remote </th>
+        <th> Agent </th>
+        <th> Answer delay </th>
+        <th> Hangup by </th>
+        <th> AMD </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @calls.each do |c| %>
+      <tr>
+        <td> <%= c.created_at.to_s(:short) %> </td>
+        <td> <%= format_durations(c.duration) %> </td>
+        <td> <%= c.result_leg_a %> </td>
+        <td> <%= agent_leg_result(c) %> </td>
+        <td> <%= format_durations(c.agent_delay) %> </td>
+        <td> <%= c.hangup_by %> </td>
+        <td> <%= c.amd %> </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <br style="clear:both"/>
+  <hr style="margin-bottom:3em; margin-top:3em;"/>

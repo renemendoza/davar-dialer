@@ -15,4 +15,13 @@ module ContactsHelper
       link_to(content_tag(:strong, "OFF"), edit_agent_path(a)) 
     end
   end
+
+  def call_history(c)
+    if c.auto_calls_count > 0
+      link_to(content_tag(:strong, "#{c.auto_calls_count}"), contact_calls_path(c)) 
+    else
+      c.auto_calls_count
+    end
+  end
+
 end

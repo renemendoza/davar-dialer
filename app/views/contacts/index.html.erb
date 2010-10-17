@@ -7,6 +7,7 @@
       <tr>
         <th> Name </th>
         <th> Phone Number </th>
+        <th> Calls count </th>
       </tr>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
       <tr>
         <td> <%= contact.name %> </td>
         <td> <%= link_to contact.phone_number_1, contacts_dial_path(contact) %></td>
+        <td> <%= call_history(contact) %> </td>
       </tr>
     <% end %>
     </tbody>

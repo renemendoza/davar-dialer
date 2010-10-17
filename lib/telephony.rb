@@ -8,7 +8,7 @@ module Telephony
     "0" => "do_not_exist",
     "1" => "no_answer",
     "3" => "ringing_no_answer",
-    "4" => "answer",
+    "4" => "answered",
     "5" => "busy",
     "8" => "congested"
   }  
@@ -59,7 +59,6 @@ module Telephony
           :variable => "auto_call_id=#{auto_call.id}",
           :async => 'true' })
 
-    #store channel_a, channel_b ?
     auto_call.action_id = res.headers["ActionID"]
     auto_call.save
   end

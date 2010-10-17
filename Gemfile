@@ -5,12 +5,14 @@ gem 'rails', '3.0.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
+gem 'mysql2', "0.2.4"
 
 
 gem 'unicorn'
 
 gem 'mongrel'
+gem 'system_timer'
+gem 'redis'
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -18,7 +20,6 @@ gem 'mongrel'
 # gem 'authlogic'
  gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'  #hmm
  #gem 'cancan'
- gem 'redis'
  gem 'formtastic'
  gem 'compass', ">= 0.10.5"
  gem 'fancy-buttons'
