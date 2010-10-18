@@ -10,13 +10,13 @@ initialization do
       parser.originate_response(event.headers)
     when  /link/
       parser.link(event.headers)
+    when  /bridge/
+      parser.link(event.headers)
     when  /hangup/
       parser.hangup(event.headers)
     end
   end
 end
-
-
 
 
 module EventsParse
@@ -62,6 +62,8 @@ module EventsParse
       call.save
     end
   end
+
+
 
     #when /cdr/
      #e = event.headers
