@@ -14,8 +14,8 @@ class ContactListsController < ApplicationController
   def create
     @contact_list = current_user.contact_lists.build(params[:contact_list])
     if @contact_list.save
-      flash[:notice] = "Contact list created"
-      redirect_to contact_list_path(@contact_list)
+      flash[:notice] = "Contact list uploaded"
+      redirect_to preview_contact_list_path(@contact_list)
     else
       flash.now[:error] = "There was an error creating the requested contact list"
       render :action => 'new'
@@ -41,6 +41,22 @@ class ContactListsController < ApplicationController
       #log this?
       flash[:error] = "There was an error assigning the requested contact list "
       redirect_to edit_contact_list_path(params[:id])
+    end
+  end
+
+  def preview
+    @contact_list =  ContactList.find(params[:id]) 
+  end
+
+  def import
+    @contact_list =  ContactList.find(params[:id]) 
+    begin
+      @contact_list.import_contacts(params[:contact_list])
+      flash[:notice] = "Contacts imported"
+      redirect_to contact_lists_path
+    rescue => e
+      flash[:error] = "There was an error importing the requested contacts: #{e.message}"
+      redirect_to preview_contact_list_path(params[:id])
     end
   end
 

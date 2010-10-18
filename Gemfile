@@ -26,6 +26,8 @@ gem 'redis'
  gem 'haml'
 
  gem 'adhearsion' 
+ gem 'roo', "1.3.11"
+# gem fastercsv ?
 
  group :development, :test, :cucumber do
   gem "autotest"

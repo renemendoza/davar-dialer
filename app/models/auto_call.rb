@@ -47,10 +47,8 @@ class AutoCall < ActiveRecord::Base
   end
 
   def determine_who_hangup!(unique_id)
-    if self.hangup_at.nil? && self.hangup_by.nil?   #this call has not received a single hangup event
-      self.hangup_at = Time.now
-      self.hangup_by = hang_up_event_owner(unique_id)
-      self.save
+    if hangup_at.nil? && hangup_by.nil?   #this call has not received a single hangup event
+      update_attributes( {:hangup_at => Time.now, :hangup_by => hang_up_event_owner(unique_id) })
     end
   end
 end

@@ -1,0 +1,37 @@
+<h3> Contact List Preview </h3>
+<%= @contact_list.list_file_name %> 
+<%= @contact_list.created_at.to_s(:short) %> 
+<%= form_for(@contact_list, :url => import_contact_list_path(@contact_list), :html => { :method => :put, :class => "import_contact_list", :id => "import_contact_list_#{@contact_list.id}" } ) do |form|%>
+<div class="preview_table">
+  <input type="checkbox" id="skip_first_row" name="contact_list[skip_first_row]" > 
+  <label for="skip_first_row">  Skip first row </label>
+  <table class="preview contacts">
+    <thead>
+      <tr>
+        <%= 1.upto(@contact_list.count_columns) do |i| %>
+          <th> 
+            <select name="contact_list[import_columns][<%= i %>]" id="contact_list_import_columns_<%= i %>">
+              <option value=""></option>
+              <%= options_for_select(ContactList::COLUMN_NAMES_HEADERS) %> 
+            </select>
+          </th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= @contact_list.list_contents(10) do |line| %>
+        <%= contact_preview_row(line) %> 
+    <% end %>
+    </tbody>
+  </table>
+</div>
+  <h6> <button type="submit" class="button">Import Contacts</button> </h6>
+<% end -%>
+
+  <br style="clear:both"/>
+  <hr style="margin-bottom:3em; margin-top:3em;"/>
+  <h6> 
+    <%= link_to "Delete this contact list", contact_list_path(@contact_list), :method => :delete, :confirm => "Are you sure to delete this list?", :class => "button red " %>
+    <%= link_to "Add a new contact list", new_contact_list_path, :class => "button" %>  
+  </h6>
+

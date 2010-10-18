@@ -24,4 +24,11 @@ module ContactsHelper
     end
   end
 
+  def contact_preview_row(row)
+    content_tag(:tr) do
+      row.collect {|cell| concat(content_tag(:td, cell))  }
+    end
+  end
+
+
 end

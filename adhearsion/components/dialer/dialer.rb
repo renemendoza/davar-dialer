@@ -20,10 +20,7 @@ end
 
 
 module EventsParse
-#class EventsParse
   def originate_response(e)
-    #ActiveRecord::Base.verify_active_connections!
-    #resp_codes = Telephony::ResponseCodes
     resp_codes = Agent::ResponseCodes
     #ahn_log "OriginateResponse: #{e.inspect}"
     begin
@@ -57,9 +54,13 @@ module EventsParse
   def link(e)
     #ahn_log "Link: #{e.inspect}"
     call = AutoCall.find_by_unique_id_a(e["Uniqueid1"])
-    call.unique_id_b = e["Uniqueid2"]
-    call.leg_b_answered_at = Time.now
-    call.save!
+    #ahn_log "Link: #{call.inspect}"
+    #do this just once
+    if call.unique_id_b.nil? and call.leg_b_answered_at.nil?
+      call.unique_id_b = e["Uniqueid2"]
+      call.leg_b_answered_at = Time.now
+      call.save
+    end
   end
 
     #when /cdr/
@@ -74,7 +75,6 @@ end
 methods_for :dialplan do
 
   def process_inbound_dialer
-    #tengo el unique_id :D
     call  = AutoCall.find(variable('auto_call_id'))
     
     dial call.dial_string, :for => 30.seconds, :caller_id => call.phone_number, :name => call.contact.name

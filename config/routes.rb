@@ -4,6 +4,8 @@ DavarDialer::Application.routes.draw do
 
 
   match 'contact_lists/assign' => 'contact_lists#assign', :as => :contact_lists_assign
+#  match 'contact_lists/preview/:id' => 'contact_lists#preview', :as => :contact_lists_preview
+#  match 'contact_lists/import_contacts/:id' => 'contact_lists#import_contacts', :as => :contact_lists_import_contacts
 
   match 'contacts/dial/:id' => 'contacts#dial', :as => :contacts_dial
 
@@ -14,7 +16,12 @@ DavarDialer::Application.routes.draw do
   match 'logout' => 'sessions#destroy', :as => :logout
   match 'register' => 'agents#new', :as => :register
 
-  resources :contact_lists
+  resources :contact_lists do
+    member do
+      get 'preview'
+      put 'import'
+    end
+  end
   resources :contacts do
     resources :calls
   end
