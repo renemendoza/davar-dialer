@@ -6,6 +6,12 @@
 # which wants a particular version of activerecord, RubyGems will raise an error saying "you cannot activate two versions of
 # the same gem". Note: specifying the version, source and require names is optional, but you must include a : after the gem name to make it a YAML key/value pair (with a nil value).
 gems:
+  activerecord:
+    version: >= 3.0.0
+  activesupport:
+    version: >= 3.0.0
+#  activerecord:
+#    version: >= 2.1.0
 #  twitter:
 #  hpricot:
 #  rack:
@@ -17,8 +23,6 @@ gems:
 #      # require() an Array of libraries when initializing:
 #      - memcache
 #      - memcache_util
-#  activerecord:
-#    version: >= 2.1.0
 #  aasm:
 #    source: http://gems.github.com
 

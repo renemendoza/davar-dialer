@@ -1,17 +1,1 @@
-development:
-  ahn_url: druby://127.0.0.1:8888
-  dialer_context: dialer
-  dialer_trunk: IAX2/zefiro
-  amd_dial_context: 
- 
-test:
-  ahn_url: druby://127.0.0.1:8888
-  dialer_context: dialer
-  dialer_trunk: IAX2/zefiro
-  amd_dial_context: 
-
-production:
-  ahn_url: druby://127.0.0.1:8888
-  dialer_context: dialer
-  dialer_trunk: IAX2/zefiro
-  amd_dial_context: 
+app_config.yml.sample

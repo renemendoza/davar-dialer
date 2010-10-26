@@ -42,9 +42,9 @@ module Telephony
 
     trunk=APP_CONFIG[:dialer_trunk]
     context=APP_CONFIG[:dialer_context]
+    prefix=APP_CONFIG[:default_prefix]
 
-    channel = "#{trunk}/1#{number_to}"  #hardcoding US/CAN style dialing :S
-
+    channel = "#{trunk}/#{default_prefix}#{number_to}"  
     auto_call = contact.auto_calls.build({:contact_id => contact.id, :agent_id => self.id, :phone_number => number_to})
 
     auto_call.save

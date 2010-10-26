@@ -1,8 +1,20 @@
 development:
-  ahn_url: druby://127.0.0.1:8888
+  ahn_url: 
+  dialer_context: 
+  dialer_trunk: 
+  default_prefix: 
+  amd_dial_context: 
  
 test:
-  ahn_url: druby://127.0.0.1:8888
+  ahn_url: 
+  dialer_context: 
+  dialer_trunk: 
+  default_prefix: 
+  amd_dial_context: 
 
 production:
-  ahn_url: druby://127.0.0.1:8888
+  ahn_url: 
+  dialer_context: 
+  dialer_trunk: 
+  default_prefix: 
+  amd_dial_context: 
