@@ -39,10 +39,9 @@ GEM
       activemodel (= 3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
-    adhearsion (0.8.6)
+    adhearsion (1.0.0)
       activesupport (>= 2.1.0)
       log4r (>= 1.0.5)
-      rubigen (>= 1.0.6)
     arel (1.0.1)
       activesupport (~> 3.0.0)
     autotest (4.3.2)
@@ -152,8 +151,6 @@ GEM
       rspec-expectations (= 2.0.0.beta.22)
     rspec-rails (2.0.0.beta.22)
       rspec (= 2.0.0.beta.22)
-    rubigen (1.5.2)
-      activesupport (>= 2.2.2)
     ruby-ole (1.2.10.1)
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
@@ -182,7 +179,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  adhearsion
+  adhearsion (>= 1.0.0)
   authlogic!
   autotest
   capybara
@@ -195,7 +192,6 @@ DEPENDENCIES
   fancy-buttons
   formtastic
   haml
-  i18n (= 0.4.2)
   launchy
   mongrel
   mysql2 (= 0.2.4)

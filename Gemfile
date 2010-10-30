@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.0'
-gem 'i18n', "0.4.2"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -26,7 +25,7 @@ gem 'redis'
  gem 'fancy-buttons'
  gem 'haml'
 
- gem 'adhearsion' 
+ gem 'adhearsion', ">= 1.0.0" 
  gem 'roo', "1.3.11"
 # gem fastercsv ?
 
