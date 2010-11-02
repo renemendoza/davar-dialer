@@ -44,8 +44,10 @@
       <% @agents.each do |agent| %>
       <tr>
         <td> 
-          <input type="radio" id="contacts_assigned_to_<%= agent.id -%>" name="contacts[assigned_to]" value=<%= agent.id -%> > 
-          <label for="contacts_assigned_to_<%= agent.id -%>"> <%= agent.name %> </label>
+          <label for="contacts_assigned_to_<%= agent.id -%>"> 
+            <input type="radio" id="contacts_assigned_to_<%= agent.id -%>" name="contacts[assigned_to]" value=<%= agent.id -%> > 
+            <%= agent.name %> 
+          </label>
         <td> &nbsp; </td>
       </tr>
     <% end %>
