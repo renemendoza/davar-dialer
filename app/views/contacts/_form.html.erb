@@ -1,0 +1,13 @@
+
+  <%= form.inputs :class => "inputs left_contact_info" do %>
+    <%= form.input :name, :label => 'Name', :input_html => { :size => 20 } %>
+    <%= form.input :phone_number_1, :label => 'Phone Number 1', :input_html => { :size => 20 } %>
+    <%= form.input :resort, :label => 'Source', :input_html => { :size => 20 } %>
+  <% end %>
+  <%= form.inputs :class => "inputs right_contact_info" do %>
+    <%= form.input :street_address, :label => 'Street Address', :input_html => { :size => 20 } %>
+    <%= form.input :city, :label => 'City', :input_html => { :size => 20 } %>
+    <%= form.input :state, :label => 'State', :input_html => { :size => 20 } %>
+  <% end %>
+
+

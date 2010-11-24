@@ -1,0 +1,171 @@
+<%= link_to "Contact Information", "#", :class => "button_small_dark_gray", :id => "toggle_show_contact_information_link", "data-bind" => "click: toggleShowContactInformation" %> 
+<%= link_to "Scheduled Tasks", "#", :class => "button_small_dark_gray", :id => "toggle_show_scheduled_tasks_link", "data-bind" => "click: toggleShowScheduledTasks" %> 
+<%= link_to "Notes", "#", :class => "button_small_dark_gray", :id => "toggle_show_notes_link", "data-bind" => "click: toggleShowCallHistory" %> 
+<%= link_to "Call History", "#", :class => "button_small_dark_gray", :id => "toggle_show_call_history_link", "data-bind" => "click: toggleShowCallHistory" %> 
+
+<br/><br/>
+
+  <div id="dialer_panel" >
+    <h4> <%=@contact.name-%> </h4>
+      <div class="call_progress">
+        <div class="remote_party"> 
+        </div>
+        <div class="progress_bar"> 
+          <img src="/images/ajax-loader2.gif" alt="Loading..."/>
+          <p class="current_status" data-bind="text: statusMessage">
+          </p>
+        </div>
+        <div class="local_party"> 
+        </div>
+      <br style="clear:both"/>
+      </div>
+    <h5> Answering Machine Detection is <%= amd_status(current_user) -%> <br/>
+     Call Recording is <%= amd_status(current_user) -%> </h5>
+  </div>
+
+  <div id="wrapup_contact_form" data-bind="visible: !callAttemptInProgress()">
+    <%= semantic_form_for @contact, :as => :post, :url => contacts_wrap_up_path(@contact), :html => { :class => "formtastic_small wrapup_contact" } do |form|%>
+      <fieldset class="inputs">
+        <ol>
+          <li class="boolean optional">
+            <label for"contact_disposition_new">Leave as new</label>
+            <input id="contact_disposition_new" type="radio" name="contact[disposition]" value="new">
+          </li>
+          <li class="boolean optional">
+            <label for"contact_disposition_open">Open</label>
+            <input id="contact_disposition_open" type="radio" name="contact[disposition]" value="open">
+          </li>
+          <li class="boolean optional">
+            <label for"contact_disposition_closed_no_sale">Closed No Sale</label>
+            <input id="contact_disposition_closed_no_sale" type="radio" name="contact[disposition]" value="closed_no_sale">
+          </li>
+          <li class="boolean optional">
+            <label for"contact_disposition_non_qualified">Non Qualified</label>
+            <input id="contact_disposition_non_qualified" type="radio" name="contact[disposition]" value="non_qualified">
+          </li>
+          <li class="boolean optional">
+            <label for"contact_disposition_abandoned">Abandoned</label>
+            <input id="contact_disposition_abandoned" type="radio" name="contact[disposition]" value="abandoned">
+          </li>
+        </ol>
+      </fieldset>
+      <%= form.buttons do %>
+          <li><button type="submit">Wrap Up Call</button>
+          </li>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div id="mask"></div>
+  <br style="clear:both"/>
+
+  <div id="edit_contact_form" data-bind="visible: showContactInformation">
+    <h4> Contact Information </h4>
+    <%= semantic_form_for @contact, :remote => true, :html => { :class => "formtastic_small edit_contact" } do |form|%>
+      <%= render :partial => 'form', :locals => {:form => form } %>
+    <br style="margin-bottom:1em; margin-top:1em;"/>
+      <%= form.buttons do %>
+          <li>
+            <%= link_to "Update", "#", :class => "button_small_dark_gray", :id => "contact_information_update_link" %>  
+          </li>
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div id="new_scheduled_task_form" data-bind="visible: showNewScheduledTaskForm">
+    <h4> New Scheduled Task </h4>
+    <%= form_for @scheduled_task, :html => { :class => "formtastic_small new_scheduled_task" }, :remote => true do |f| %>
+      <%= render :partial => 'scheduled_tasks/form', :locals => {:form => form } %>
+      <br style="margin-bottom:1em; margin-top:1em;"/>
+      <fieldset class="buttons">
+        <ol>
+          <li>
+            <%= link_to "Cancel", "#", :class => "button_small_gray", "data-bind" => "click: cancelScheduledTask"%>  
+            <%= link_to "Save", "#", :class => "button_small_dark_gray", :id => "schedule_task_save_link" %>  
+          </li>
+        </ol>
+      </fieldset>
+    <% end %>
+  </div>
+
+
+  <div id="scheduled_tasks_list" data-bind="visible: showScheduledTasks">
+    <br style="margin-bottom:1em; margin-top:1em;"/>
+    <table class="small scheduled_tasks">
+      <thead>
+        <tr>
+          <th> Scheduled Tasks</th>
+          <th> Due for </th>
+          <th> Status </th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @contact.scheduled_tasks.each do |s| %>
+        <tr>
+          <td> <%= display_task_type(s) %> <%= s.description %> </td>
+          <td> <%= s.scheduled_at.to_s(:short) %> </td>
+          <td> no </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= link_to "New Scheduled Task", "#", :class => "button_small_dark_gray", :id => "toggle_show_scheduled_tasks_link", "data-bind" => "click: newScheduledTask" %> 
+    <br style="margin-bottom:1em; margin-top:1em;"/>
+  </div>
+
+
+  <div id="call_history" data-bind="visible: showCallHistory">
+    <br style="margin-bottom:1em; margin-top:1em;"/>
+
+    <table class="calls">
+      <thead>
+        <tr>
+          <th> Call Time </th>
+          <th> Duration </th>
+          <th> Remote </th>
+          <th> Agent </th>
+          <th> Answer delay </th>
+          <th> Hangup by </th>
+          <th> AMD </th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @contact.auto_calls.each do |c| %>
+        <tr>
+          <td> <%= c.created_at.to_s(:short) %> </td>
+          <td> <%= format_durations(c.duration) %> </td>
+          <td> <%= c.result_leg_a %> </td>
+          <td> <%= agent_leg_result(c) %> </td>
+          <td> <%= format_durations(c.agent_delay) %> </td>
+          <td> <%= c.hangup_by %> </td>
+          <td> <%= c.amd %> </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+
+<script>
+$(document).ready(function () {
+  viewModel.dial(<%= @contact.id %>);
+}); 
+/*
+<div id="dialer_panel" >
+<div id="dialer_panel" data-bind="visible: callAttemptInProgress">
+data-bind="click: dial, enable: !callInProgress()"
+<td> < link_to contact.phone_number_1, contacts_dial_path(contact), :class => "dial_trigger", :rel => "#dial_status" ></td>
+
+        <td> < link_to contact.phone_number_1, contacts_dial_path(contact), "data-bind" => "click: viewModel.dial.bind(this), enable: !callInProgress()" ></td>
+        <td> < link_to contact.phone_number_1, contacts_dial_path(contact), "data-bind" => "click: function() { viewModel.dial(\'#{contacts_dial_path(contact)}\')}, enable: !callAttemptInProgress()" > </td> 
+
+    <p>To end this call press 
+    <= link_to "Hangup", "#", :class => "button_small_red", "data-bind" => "click: hangup">  
+    </p>
+
+*/
+</script>
+
+

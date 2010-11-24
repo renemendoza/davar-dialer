@@ -6,7 +6,23 @@ class CallsController < ApplicationController
     @calls = @contact.auto_calls
   end
 
+
   def show
+    @auto_call = AutoCall.find(params[:id])
+    #include the contact name
+    respond_to do |format|
+      format.js { render :json => @auto_call }
+    end
   end
+
+  def update
+    @auto_call = AutoCall.find(params[:id])
+    if @auto_call.update_attributes(params[:auto_call])
+    end
+    respond_to do |format|
+      format.js { render :json => @auto_call }
+    end
+  end
+
 
 end
