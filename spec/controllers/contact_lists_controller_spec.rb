@@ -76,10 +76,10 @@ describe ContactListsController do
           flash[:error].should be_nil
         end
 
-        it "should redirect to the created contact list " do
+        it "should redirect to the preview contact list page" do
           do_post
           #this is not beautiful
-          response.should redirect_to(contact_list_url(@contact_list.id))
+          response.should redirect_to(preview_contact_list_url(@contact_list.id))
         end
 
         after(:each) do 
@@ -190,18 +190,22 @@ describe ContactListsController do
 
         after(:each) do 
           ContactList.delete_all
+          Agent.delete_all
         end
       end
 
       describe "GET /contact_lists/edit/1" do
         #assignment of contact_lists 
         before(:each) do 
-          @contact_list = Factory(:contact_list_with_uploaded_file, :id => 1)   #sweet
-          @session = Session.create( Factory(:agent, :contact_lists => [@contact_list], :admin => true) )
+          @admin = Factory(:agent,  :admin => true)
+          @session = Session.create( @admin )
+          @contact_list = Factory(:contact_list_with_uploaded_file, :id => 1, :owner => @admin)   #sweet
+          @admin.contact_lists << @contact_list
           @current_user = @session.record
           controller.stub!(:current_user).and_return(@current_user)
           ContactList.stub!(:find).with("1").and_return(@contact_list)
-          @agents = [Factory(:agent, :admin => nil)]
+          @agents = [Factory(:agent)]
+          #Agent.agents).and_return(@agents)
         end
 
         def do_get
@@ -228,7 +232,7 @@ describe ContactListsController do
           assigns[:contact_list].should == @contact_list
         end
 
-        it "should assign the contact_list for the view" do
+        it "should assign the agent for the view" do
           do_get
           assigns[:agents].should == @agents
         end
@@ -271,6 +275,113 @@ describe ContactListsController do
         it "should redirect to the contact_lists_path" do
           do_update
           response.should redirect_to(contact_lists_path)
+        end
+      end
+
+      describe "GET /contact_lists/1/preview" do
+        before(:each) do
+          @admin = Factory(:agent,  :admin => true)
+          @session = Session.create( @admin )
+          @contact_list = Factory(:contact_list_with_uploaded_file)   #sweet
+
+          @current_user = @session.record
+          controller.stub!(:current_user).and_return(@current_user)
+          ContactList.stub!(:find).with("1").and_return(@contact_list)
+        end
+
+        def do_preview
+          get :preview, :id => "1"
+        end
+
+        it "should be succesful" do
+          do_preview
+          response.should be_success
+        end
+
+        it "should render the preview template" do
+          do_preview
+          response.should render_template("preview")
+        end
+
+        it "should find the contact list requested" do
+          ContactList.should_receive(:find).with("1").and_return(@contact_list)
+          do_preview
+        end
+
+        it "should assign the contact_list for the view" do
+          do_preview
+          assigns[:contact_list].should == @contact_list
+        end
+
+        after(:each) do 
+          ContactList.delete_all
+          Agent.delete_all
+        end
+      end
+
+      describe "POST /contact_lists/1/import with valid params" do
+        before(:each) do 
+          @session = Session.create( Factory(:agent, :admin => true) )  #session as administrator
+          @contact_list = Factory(:contact_list_with_uploaded_file)   #sweet
+          ContactList.stub!(:find).with("1").and_return(@contact_list)
+          @params = {"import_columns" => {"1" => "full_name", "2" => "phone_number_1" }}
+        end
+
+        def do_post
+          post :import, :id => "1", :contact_list => @params
+        end
+
+        it "flash notice should not be nil" do
+          do_post
+          flash[:notice].should_not be_nil
+        end   
+
+        it "flash error should be nil" do
+          do_post
+          flash[:error].should be_nil
+        end 
+
+        it "should redirect to the contact_lists_path" do
+          do_post
+          response.should redirect_to(contact_lists_path)
+        end
+
+        after(:each) do 
+          ContactList.delete_all
+          Agent.delete_all
+        end
+      end
+
+      describe "POST /contact_lists/1/import with invalid params" do
+        before(:each) do 
+          @session = Session.create( Factory(:agent, :admin => true) )  #session as administrator
+          @contact_list = Factory(:contact_list_with_uploaded_file)   #sweet
+          ContactList.stub!(:find).with("1").and_return(@contact_list)
+          @params = {}
+        end
+
+        def do_post
+          post :import, :id => "1", :contact_list => @params
+        end
+
+        it "flash notice should be nil" do
+          do_post
+          flash[:notice].should be_nil
+        end
+
+        it "flash error should not be nil" do
+          do_post
+          flash[:error].should_not be_nil
+        end
+
+        it "should redirect to the preview_contact_list_path" do
+          do_post
+          response.should redirect_to(preview_contact_list_path("1"))
+        end
+
+        after(:each) do 
+          ContactList.delete_all
+          Agent.delete_all
         end
       end
 
