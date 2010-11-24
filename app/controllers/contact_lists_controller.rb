@@ -55,13 +55,22 @@ class ContactListsController < ApplicationController
       flash[:notice] = "Contacts imported"
       redirect_to contact_lists_path
     rescue => e
-      flash[:error] = "There was an error importing the requested contacts: #{e.message}"
+      flash[:error] = "There was an error importing the requested contacts: #{e.message} "
       redirect_to preview_contact_list_path(params[:id])
     end
   end
 
-  #huge ass spec :S
-  #
-  #
+  def destroy
+    @contact_list =  ContactList.find(params[:id]) 
+    begin
+      @contact_list.destroy
+      flash[:notice] = "Contact List deleted"
+      redirect_to contact_lists_path
+    rescue => e
+      #log this?
+      flash[:error] = "There was an error deleting the requested contact list "
+      redirect_to contact_list_path(@contact_list)
+    end
+  end
 
 end
