@@ -2,7 +2,8 @@ class Contact < ActiveRecord::Base
   belongs_to :contact_list
   belongs_to :agent, :foreign_key => :assigned_to
 
-  has_many :auto_calls
+  has_many :auto_calls, :dependent => :destroy
+  has_many :scheduled_tasks
 
 
   before_validation do

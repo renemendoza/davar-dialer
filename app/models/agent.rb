@@ -11,7 +11,12 @@ class Agent < ActiveRecord::Base
   has_many :contacts, :through => :contact_lists
   
   #agents
-  has_many :assigned_contacts, :foreign_key => :assigned_to, :class_name => "Contact"
+  has_many :assigned_contacts, :foreign_key => :assigned_to, :class_name => "Contact" do
+    def next
+      #primero los new, siempre va a tomar un nuevo mientras haya
+      self.detect {|c|  c.disposition == "new" }
+    end
+  end
 
   attr_protected :admin, :approved
 
@@ -28,6 +33,8 @@ class Agent < ActiveRecord::Base
   def self.approved
     where(:approved => true)
   end
+
+  #jdef next
 
 
 end
