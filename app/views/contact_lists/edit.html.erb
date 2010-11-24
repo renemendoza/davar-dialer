@@ -4,7 +4,7 @@
 
   <h4> Contacts </h4>
 <%= form_for(@contact_list) do |contact_list_form|%>
-  <table class="short_first contacts">
+  <table class="main long_first_column contacts">
     <thead>
       <tr>
         <th> Name </th>
@@ -23,8 +23,8 @@
         </td>
         <td> <%= contact.phone_number_1 %></td>
         <td> &nbsp; </td>
-        <td> &nbsp; </td>
-        <td> <%= contact_status(contact) %> </td>
+        <td> <%= contact.disposition %></td>
+        <td> <%= contact_assignment_status(contact) %> </td>
       </tr>
     <% end %>
     </tbody>
@@ -33,7 +33,7 @@
   <br style="clear:both"/>
   <hr style="margin-bottom:3em; margin-top:3em;"/>
   <h4> Available Agents </h4>
-  <table class="assign agents">
+  <table class="main assign agents">
     <thead>
       <tr>
         <th> Name </th>

@@ -3,12 +3,12 @@
 <%= @contact_list.created_at.to_s(:short) %> 
 
   <h4> Contacts </h4>
-  <table class="short_first contacts">
+  <table class="main long_first_column contacts">
     <thead>
       <tr>
         <th> Name </th>
         <th> Phone Number </th>
-        <th> &nbsp; </th>
+        <th> Status </th>
         <th> Assigned To </th>
       </tr>
     </thead>
@@ -17,8 +17,8 @@
       <tr>
         <td> <%= contact.name %> </td>
         <td> <%= contact.phone_number_1 %></td>
-        <td> &nbsp; </td>
-        <td> <%= contact_status(contact) %> </td>
+        <td> <%= contact.disposition %></td>
+        <td> <%= contact_assignment_status(contact) %> </td>
       </tr>
     <% end %>
     </tbody>
