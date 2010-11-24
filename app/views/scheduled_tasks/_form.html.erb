@@ -1,0 +1,24 @@
+      <fieldset class="inputs">
+        <ol>
+          <li class="string optional">
+            <%= label("scheduled_task", "description", "Description") -%>
+            <%= text_field("scheduled_task", "description") -%>
+          </li>
+          <li class="boolean optional">
+            <%= label("scheduled_task", "task_type", "Email") -%>
+            <%= radio_button("scheduled_task", "task_type", "email") -%>
+          </li>
+          <li class="boolean optional">
+            <%= label("scheduled_task", "task_type", "Phone Call") -%>
+            <%= radio_button("scheduled_task", "task_type", "phone_call") -%>
+          </li>
+          <li class="optional">
+            <%= label("scheduled_task", "scheduled_at", "Select Time & Date") -%>
+            <%= hidden_field("scheduled_task", "scheduled_at") -%>
+            <%= hidden_field("scheduled_task", "contact_id" ) -%>
+            <%= hidden_field("scheduled_task", "agent_id") -%>
+            <div class="date_picker">
+            </div>
+          </li>
+        </ol>
+      </fieldset>

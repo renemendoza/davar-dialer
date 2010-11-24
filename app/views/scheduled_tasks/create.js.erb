@@ -1,0 +1,3 @@
+$('div#flash_notice').remove();
+$("body.bbp").prepend('<div id="flash_notice"><%= escape_javascript(flash.delete(:notice)) %></div>');
+$("table.scheduled_tasks tbody").append('<tr> <td> <%= display_task_type(@scheduled_task) %> <%= @scheduled_task.description %> </td> <td> <%= @scheduled_task.scheduled_at.to_s(:short) %> </td> <td>  </td> </tr>');
