@@ -3,11 +3,16 @@ DavarDialer::Application.routes.draw do
 
 
 
+#  post "scheduled_tasks/create"
+
   match 'contact_lists/assign' => 'contact_lists#assign', :as => :contact_lists_assign
 #  match 'contact_lists/preview/:id' => 'contact_lists#preview', :as => :contact_lists_preview
 #  match 'contact_lists/import_contacts/:id' => 'contact_lists#import_contacts', :as => :contact_lists_import_contacts
 
+  match 'contacts/preview_dial/:id' => 'contacts#preview_dial', :as => :contacts_preview_dial
   match 'contacts/dial/:id' => 'contacts#dial', :as => :contacts_dial
+  match 'contacts/wrap_up/:id' => 'contacts#wrap_up', :as => :contacts_wrap_up
+  match 'contacts/dialer/:id' => 'contacts#dialer', :as => :contacts_dialer
 
 
   match 'agents/approve/:id' => 'agents#approve', :as => :agents_approve
@@ -27,7 +32,9 @@ DavarDialer::Application.routes.draw do
   end
   resources :sessions
   resources :agents
+  resources :scheduled_tasks
 
+  resources :calls
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
