@@ -1,37 +1,33 @@
 
-=custom-table
-thead > tr > th
-  :background-color black !important
-  :color white
-  :text-transform uppercase
-  :letter-spacing 1px
-  :font-size 1em
-  :line-height 2em
+table.main
+  thead > tr > th
+    :background-color black !important
+    :color white
+    :text-transform uppercase
+    :letter-spacing 1px
+    :font-size 1em
+    :line-height 2em
+
+  tbody > tr
+    :font-size 1.2em
+    :line-height 2em
+
+  tbody > tr:hover
+    :background-color #CFF5F9
+    :cursor pointer
+
+  tbody > tr:hover > td
+    :font-weight bold !important
+
+  tbody > tr.odd 
+    :background-color #ECFBFD
+
+  tbody > tr.odd:hover
+    :background-color #CFF5F9
 
 
-tbody > tr
-  :font-size 1.2em
-  :line-height 2em
-
-tbody > tr > td:first-child 
-  :width 300px
-
-tbody > tr:hover
-  :background-color #CFF5F9
-  :cursor pointer
-
-tbody > tr:hover > td
-  :font-weight bold !important
-
-
-tbody > tr.odd 
-  :background-color #ECFBFD
-
-tbody > tr.odd:hover
-  :background-color #CFF5F9
-
-table.short_first tbody > tr > td:first-child 
-  :width 200px !important
+table.long_first_column tbody > tr > td:first-child 
+  :width 240px
 
 div.preview_table
   :overflow auto
@@ -42,4 +38,12 @@ table.preview
 
 table.preview tbody > tr:hover > td
   :font-weight normal !important
+
+table.small
+  :border 1px solid gray
+  thead > tr > th
+    :background-color #FFF !important
+    :color #222
+    :letter-spacing 1px
+    :font-size 1.2em
 

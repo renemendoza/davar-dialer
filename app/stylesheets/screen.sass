@@ -25,7 +25,7 @@
 @import partials/main
 @import partials/errors
 @import partials/tables
-
+@import partials/telephony
 
 
 
@@ -100,27 +100,30 @@ div#main
 h3
   +text-shadow
   :font-weight bold
-  :font-family "Trebuchet MS" 
+  :font-family "Helvetica" 
   :font-size 2em !important
   :letter-spacing 1px
   :word-spacing 0.1em
   :text-transform uppercase
 
 h4
-  +text-shadow
   :font-weight bold
-  :font-family "Trebuchet MS" 
+  :font-family "Helvetica" 
   :font-size 1.7em !important
   :letter-spacing 1px
   :word-spacing 0.1em
-  :text-transform uppercase
 
 h6
   +float-right
 
-table.contact_lists
-  +custom-table
+div.date_picker
+  :width 18em
+  :float left
 
-table.contacts
-  +custom-table
+.ui-datepicker 
+  :padding 0.2em 0.2em 0
+  table
+    th
+      :background white
+
 

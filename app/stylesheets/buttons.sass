@@ -2,8 +2,6 @@
 
 body
   padding-top: 10px
-div
-  margin-top: 15px
 
 !green = darken(#57b42c, 8)
 !blue = adjust_hue(!green, 110)
@@ -55,3 +53,25 @@ a.button_small_yellow
   +fancy-button-colors(!red)
   +fancy-button-padding(2px, 6px, 2px)
   :font-weight bold
+
+a.button_small_gray
+  +fancy-button-colors-matte(#ddd)
+  +fancy-button-padding(2px, 6px, 2px)
+  +border-radius(4px)
+  :font-weight bold
+  :text-decoration none
+
+a.button_small_dark_gray
+  +fancy-button-colors-matte(#606060)
+  +fancy-button-padding(2px, 6px, 2px)
+  +border-radius(4px)
+  :font-weight bold
+  :text-decoration none
+
+a.button_small_red
+  +fancy-button-colors(!red)
+  +fancy-button-padding(2px, 6px, 2px)
+  +border-radius(4px)
+  :font-weight bold
+  :text-decoration none
+
