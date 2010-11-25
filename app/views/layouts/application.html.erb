@@ -4,11 +4,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>DialaList</title>
-  <%= javascript_include_tag 'jquery.min.js', 'rails', 'application' %>  
+  <%= javascript_include_tag 'jquery.min.js', 'rails'%>  
+  <%= javascript_include_tag 'jquery.timers-1.2.js'%>  
+  <%= javascript_include_tag 'jquery-ui-1.8.6.custom.min.js' %>  
+  <%= javascript_include_tag 'jquery-ui-timepicker-addon.min.js' %>  
+  <%= javascript_include_tag 'knockout-1.1.1' %>  
+  <%= javascript_include_tag 'application' %>  
 
   <%= stylesheet_link_tag "compiled/screen.css", :media => "screen, projection" %>
   <%= stylesheet_link_tag "compiled/buttons.css", :media => "screen, projection" %>
+  <%= stylesheet_link_tag "jquery-ui-1.8.6.custom.css", :media => "screen, projection" %>
   <%= stylesheet_link_tag "compiled/print.css", :media => "print" %>
+  <link type="text/css" href="css/" rel="stylesheet" />  
 
   <!--[if lt IE 8]>
     <%= stylesheet_link_tag "compiled/ie.css", :media => "screen, projection" %>
