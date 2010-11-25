@@ -102,7 +102,7 @@ viewModel.originateAttempt = function(contact_id) {
 }
 
 viewModel.callProgressControl = function(auto_call) {
-  if (auto_call["hangup_at"] == null) {
+  if (auto_call["leg_a_hangup_at"] == null) {
 
     if ( (auto_call["result_leg_a"] == "answered") || (auto_call["leg_a_answered_at"] != null) ) {
       if ( (auto_call["result_leg_b"] == "answered") || (auto_call["leg_b_answered_at"] != null) ) {

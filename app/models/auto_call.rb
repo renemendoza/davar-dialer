@@ -14,14 +14,20 @@ class AutoCall < ActiveRecord::Base
   end
 
   def duration
+    #lets just process the CDR event for this one
     if leg_a_answered_at.nil?
       return 0
     else
-      if hangup_at.nil? 
-        (Time.now - leg_a_answered_at).round
+      if hangup? 
+        (leg_a_hangup_at - leg_a_answered_at).round
       else
-        (hangup_at - leg_a_answered_at).round
+        (Time.now - leg_a_answered_at).round
       end
+    #  if hangup_at.nil? 
+    #    (Time.now - leg_a_answered_at).round
+    #  else
+    #    (hangup_at - leg_a_answered_at).round
+    #  end
     end
   end
 
@@ -34,21 +40,35 @@ class AutoCall < ActiveRecord::Base
   end
 
 
-  def self.find_by_any_unique_id(unique_id)
-    AutoCall.where( ["unique_id_a = ? OR unique_id_b = ?", unique_id, unique_id ] ).first
+  def hangup?
+    return false if leg_a_hangup_at.nil? || leg_b_hangup_at.nil?   
+    return true
   end
 
-  def hang_up_event_owner(unique_id)
-    if unique_id_a == unique_id
-      return :contact
-    else
-      return :agent
+
+  def self.process_hangup(unique_id)
+    if ac = AutoCall.where( ["unique_id_a = ? OR unique_id_b = ?", unique_id, unique_id ] ).first
+      if ac.unique_id_a == unique_id
+        ac.leg_a_hangup_at = Time.now
+        ac.hangup_by ||= :contact
+      elsif ac.unique_id_b = unique_id
+        ac.leg_b_hangup_at = Time.now
+        ac.hangup_by ||= :agent
+      end
+      ac.save
     end
   end
 
-  def determine_who_hangup!(unique_id)
-    if hangup_at.nil? && hangup_by.nil?   #this call has not received a single hangup event
-      update_attributes( {:hangup_at => Time.now, :hangup_by => hang_up_event_owner(unique_id) })
+  def self.process_link(uid_a, uid_b)
+    #h  angup(e["Uniqueid"])   
+    if ac = AutoCall.find_by_unique_id_a(uid_a)
+      if ac.unique_id_b.nil? and ac.leg_b_answered_at.nil?
+        ac.unique_id_b = uid_b
+        ac.leg_b_answered_at = Time.now
+        ac.save
+      end
     end
   end
+
+
 end

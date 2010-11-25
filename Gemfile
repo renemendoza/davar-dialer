@@ -7,6 +7,7 @@ gem 'rails', '3.0.0'
 
 #gem 'mysql2', "0.2.3"
 gem 'mysql'
+#gem 'mysql2'
 
 
 gem 'unicorn'

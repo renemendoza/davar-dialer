@@ -1,25 +1,27 @@
 initialization do
-  ActiveRecord::Base.verify_active_connections!
-#  dialer_trunk =APP_CONFIG[:dialer_trunk]
-  parser = Object.new
-  parser.extend EventsParse
+  Semaphore = Mutex.new
+#  ActiveRecord::Base.verify_active_connections!
 
-  Events.register_callback([:asterisk, :manager_interface]) do |event|
-    case event.name.downcase
-    when  /originateresponse/
-      parser.originate_response(event.headers)
-    when  /link/
-      parser.link(event.headers)
-    when  /bridge/
-      parser.link(event.headers)
-    when  /hangup/
-      parser.hangup(event.headers)
-    end
-  end
+#  parser = Object.new
+#  parser.extend EventsParse
+
+#  Events.register_callback([:asterisk, :manager_interface]) do |event|
+#    case event.name.downcase
+#    when  /originateresponse/
+#      parser.originate_response(event.headers)
+#    when  /link/
+#      parser.link(event.headers)
+#    when  /bridge/
+#      parser.link(event.headers)
+#    when  /hangup/
+#      parser.hangup(event.headers)
+#    end
+#  end
 end
 
 
-module EventsParse
+#module EventsParse
+methods_for :events do
   def originate_response(e)
     resp_codes = Agent::ResponseCodes
     #ahn_log "OriginateResponse: #{e.inspect}"
@@ -40,30 +42,17 @@ module EventsParse
 
   def hangup(e)
     #ahn_log "Hangup: #{e.inspect}"
-    begin
-      if c = AutoCall.find_by_any_unique_id(e["Uniqueid"])
-        #ahn_log "Hangup: did find call #{c.inspect}"
-        c.determine_who_hangup!(e["Uniqueid"])
-      end
-    rescue => err
-      ahn_log "Hangup: could not find call #{err.message}"
-      ahn_log err
-    end
+    Semaphore.synchronize {
+      AutoCall.process_hangup(e["Uniqueid"])   
+    }
   end
 
   def link(e)
     #ahn_log "Link: #{e.inspect}"
-    call = AutoCall.find_by_unique_id_a(e["Uniqueid1"])
-    #ahn_log "Link: #{call.inspect}"
-    #do this just once
-    if call.unique_id_b.nil? and call.leg_b_answered_at.nil?
-      call.unique_id_b = e["Uniqueid2"]
-      call.leg_b_answered_at = Time.now
-      call.save
-    end
+    Semaphore.synchronize {
+      AutoCall.process_link(e["Uniqueid1"], e["Uniqueid2"])
+    }
   end
-
-
 
     #when /cdr/
      #e = event.headers
