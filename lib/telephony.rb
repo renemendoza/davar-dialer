@@ -44,10 +44,12 @@ module Telephony
     context=APP_CONFIG[:dialer_context]
     prefix=APP_CONFIG[:default_prefix]
 
-    channel = "#{trunk}/#{default_prefix}#{number_to}"  
+  
+
+    channel = "#{trunk}/#{prefix}#{number_to}"  
     auto_call = contact.auto_calls.build({:contact_id => contact.id, :agent_id => self.id, :phone_number => number_to})
 
-    auto_call.save
+    auto_call.save #maybe this is redundant?
       
     res = AHN.originate({
           :channel   => channel,    #the remote
@@ -61,6 +63,7 @@ module Telephony
 
     auto_call.action_id = res.headers["ActionID"]
     auto_call.save
+    auto_call
   end
 
 #sandwich code example lets refactor
