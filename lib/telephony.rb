@@ -50,16 +50,17 @@ module Telephony
     auto_call = contact.auto_calls.build({:contact_id => contact.id, :agent_id => self.id, :phone_number => number_to})
 
     auto_call.save #maybe this is redundant?
+    agi_url = "agi://127.0.0.1/" + context   #maybe we dont want to hardcode the URL 
       
     res = AHN.originate({
           :channel   => channel,    #the remote
-          :context   => context,    #the local
-          :exten   => "s", 
-          :priority  => 1,
+          :application   => "AGI",  #local leg  :)
+          :data => agi_url
           :callerid  => number_to,
           :timeout => 30000,
           :variable => "auto_call_id=#{auto_call.id}",
           :async => 'true' })
+
 
     auto_call.action_id = res.headers["ActionID"]
     auto_call.save
