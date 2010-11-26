@@ -21,6 +21,8 @@
       link(event.headers)
     when  /hangup/
       hangup(event.headers)
+    when  /cdr/
+      cdr(event.headers)
     end
 #   ahn_log.events event.inspect
  end

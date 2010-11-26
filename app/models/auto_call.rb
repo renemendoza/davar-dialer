@@ -14,7 +14,7 @@ class AutoCall < ActiveRecord::Base
   end
 
   def duration
-    #lets just process the CDR event for this one
+    #lets just process the CDR event for this one ?
     if leg_a_answered_at.nil?
       return 0
     else
@@ -23,11 +23,6 @@ class AutoCall < ActiveRecord::Base
       else
         (Time.now - leg_a_answered_at).round
       end
-    #  if hangup_at.nil? 
-    #    (Time.now - leg_a_answered_at).round
-    #  else
-    #    (hangup_at - leg_a_answered_at).round
-    #  end
     end
   end
 
@@ -45,6 +40,37 @@ class AutoCall < ActiveRecord::Base
     return true
   end
 
+  #maybe move this to a module ?
+  def self.process_originate_response(action_id, reason, uid)
+    resp_codes = Agent::ResponseCodes
+    if ac = AutoCall.find_by_action_id(action_id)
+      ac.result_leg_a = resp_codes.include?(reason) ? resp_codes[reason] : "other_#{reason}"
+      ac.unique_id_a = uid
+      if ac.result_leg_a == "answered"
+        ac.leg_a_answered_at = Time.now
+      end
+      ac.save
+    end
+  end
+
+  def self.process_link(uid_a, uid_b)
+    if ac = AutoCall.find_by_unique_id_a(uid_a)
+      if ac.unique_id_b.nil? and ac.leg_b_answered_at.nil?
+        ac.unique_id_b = uid_b
+        ac.leg_b_answered_at = Time.now
+        ac.save
+      end
+    end
+  end
+
+  def self.process_cdr(unique_id, duration, billsec)
+    if ac = AutoCall.where( ["unique_id_a = ? OR unique_id_b = ?", unique_id, unique_id ] ).first
+      ac.cdr_duration = duration
+      ac.cdr_billsec = billsec
+      ac.save
+    end
+  end
+
 
   def self.process_hangup(unique_id)
     if ac = AutoCall.where( ["unique_id_a = ? OR unique_id_b = ?", unique_id, unique_id ] ).first
@@ -59,16 +85,6 @@ class AutoCall < ActiveRecord::Base
     end
   end
 
-  def self.process_link(uid_a, uid_b)
-    #h  angup(e["Uniqueid"])   
-    if ac = AutoCall.find_by_unique_id_a(uid_a)
-      if ac.unique_id_b.nil? and ac.leg_b_answered_at.nil?
-        ac.unique_id_b = uid_b
-        ac.leg_b_answered_at = Time.now
-        ac.save
-      end
-    end
-  end
 
 
 end

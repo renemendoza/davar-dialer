@@ -23,20 +23,23 @@ end
 #module EventsParse
 methods_for :events do
   def originate_response(e)
-    resp_codes = Agent::ResponseCodes
+    Semaphore.synchronize {
+      AutoCall.process_originate_response(e["ActionID"], e["Reason"], e["Uniqueid"])   
+    }
+    #resp_codes = Agent::ResponseCodes
     #ahn_log "OriginateResponse: #{e.inspect}"
-    begin
-      c = AutoCall.find_by_action_id(e["ActionID"])
-      c.result_leg_a = resp_codes.include?(e["Reason"]) ? resp_codes[e["Reason"]] : "other_#{e['Reason']}"
-      c.unique_id_a = e["Uniqueid"]    
-      if c.result_leg_a == "answered"
-        c.leg_a_answered_at = Time.now
-      end
-      c.save
-    rescue => err
-      ahn_log "Not found by actionid   #{err.message}"
-      ahn_log err
-    end
+    #begin
+    #  c = AutoCall.find_by_action_id(e["ActionID"])
+    #  c.result_leg_a = resp_codes.include?(e["Reason"]) ? resp_codes[e["Reason"]] : "other_#{e['Reason']}"
+    #  c.unique_id_a = e["Uniqueid"]    
+    #  if c.result_leg_a == "answered"
+    #    c.leg_a_answered_at = Time.now
+    #  end
+    #  c.save
+    #rescue => err
+    #  ahn_log "Not found by actionid   #{err.message}"
+    #  ahn_log err
+    #end
   end
 
 
@@ -54,9 +57,14 @@ methods_for :events do
     }
   end
 
+  def cdr(e)
+    ahn_log "Link: #{e.inspect}"
+    Semaphore.synchronize {
+      AutoCall.process_cdr(e["UniqueID"], e["Duration"], e["BillableSeconds"])   
+    }
+  end
+
     #when /cdr/
-     #e = event.headers
-     # call = AutoCall.find_by_unique_id_a(e["Uniqueid1"])
      # there are some durations but they might be worthless
      # ahn_log "#{event.inspect}"
    # end   
