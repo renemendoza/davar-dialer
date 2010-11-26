@@ -55,7 +55,7 @@ module Telephony
     res = AHN.originate({
           :channel   => channel,    #the remote
           :application   => "AGI",  #local leg  :)
-          :data => agi_url
+          :data => agi_url,
           :callerid  => number_to,
           :timeout => 30000,
           :variable => "auto_call_id=#{auto_call.id}",
