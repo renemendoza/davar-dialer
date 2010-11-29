@@ -1,8 +1,11 @@
 <h3>Agent Settings </h3>
 
-<%= semantic_form_for @agent do |form|%>
+<%= semantic_form_for @agent, :html => { :class => "main" }  do |form|%>
   <%= render :partial => 'form', :locals => {:form => form } %>
   <%= form.buttons do %>
       <li><button type="submit">Update</button></li>
   <% end %>
 <% end %>
+<br style="clear:both"/> 
+<br style="margin-bottom:3em; margin-top:3em;"/>
+

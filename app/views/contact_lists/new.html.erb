@@ -1,7 +1,7 @@
  
 <h3>Adding a new contact list</h3>
 
-<%= semantic_form_for(@contact_list, :html => {:multipart => true}) do |form|%>
+<%= semantic_form_for(@contact_list, :html => {:multipart => true, :class => "main"}) do |form|%>
     <%= form.inputs do %>
       <%= form.semantic_errors :state %>
       <%= form.input :list, :label => 'Select a File', :type => :file %>

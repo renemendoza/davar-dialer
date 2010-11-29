@@ -11,6 +11,11 @@
       <%= check_box("agent", "use_amd") -%>
     </li>
 
-    <%= form.input :trunk, :label => 'Send calls with another Trunk', :input_html => { :size => 20 }, :hint => "Change this field to use a different trunk from the default." %>
+    <li id="agent_automatic_dialer" class="boolean optional">
+      <%= label("agent", "automatic_dialer", "Enable Automatic Dialer?") -%>
+      <%= check_box("agent", "automatic_dialer") -%>
+    </li>
+
+    <%= form.input :trunk, :label => 'Send calls with another Trunk', :input_html => { :size => 20 } %>
 
   <% end %>

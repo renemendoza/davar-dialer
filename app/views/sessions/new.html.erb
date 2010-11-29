@@ -1,6 +1,6 @@
 <h3> Please login to your account </h3>
 
-<%= semantic_form_for @session do |form|%>
+<%= semantic_form_for @session, :html => { :class => "login" }  do |form|%>
 
     <%= form.inputs do %>
       <%= form.semantic_errors :state %>
