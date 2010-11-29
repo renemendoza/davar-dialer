@@ -74,3 +74,41 @@ img.scheduled_task
   :vertical-align middle
   :margin-right 1em
 
+ol.resume
+  +column(9)
+  li
+    :font-size 1.4em
+    :font-weight bold
+
+div.dialer_header
+  :position fixed
+  :right 0
+  :top 100px
+  ol
+    :list-style-type none
+    :margin 0
+    li
+      :background -moz-linear-gradient(center top , #FFFFFF 0%, #CECECE 100%) repeat-x scroll left bottom white
+      :font-size 1.4em
+      :-moz-border-radius 6px 0px 0px 6px
+      :-webkit-border-radius 6px 0px 0px 6px
+      :padding-left 10px
+      :font-weight bold
+
+      a.more
+        +unstyled-link
+        :font-size 11px
+        :cursor pointer
+
+    li:hover
+      :background -moz-linear-gradient(center top , #989898 0%, #6A6A6A 10%, #3C3C3C 50%, #353535 50%, #4E4E4E 100%) repeat-x scroll left bottom #444444
+      :color #FFF
+
+      a.more
+        :color #FFF
+
+    li:hover div.settings
+      :color #FFF
+
+      ol li
+        :background none

@@ -1,11 +1,22 @@
-<h3> Dialer </h3>
-<h4> Your Assigned Contacts (<%=@contacts.count-%>)</h4>
-<h5> Answering Machine Detection is <%= amd_status(current_user) -%> </h5>
+<div class="dialer_header">
+  <ol>
+    <li> My Tasks </li>
+    <li> Settings 
+        <a class="more" href="<%= edit_agent_path(current_user) %>">More Settings</a>
+           
+        <div class="settings">
+          <%= render :partial => 'agents/telephony_settings', :locals => {:agent => @agent } %>
+        </div> 
+    </li>
+  </ol>
+</div>
 
-  <h6> <%= link_to "Start Automatic Dialer", "#", :class => "button_small_dark_gray" %>  
-  </h6>
-  <br style="clear:both; margin-bottom:1em; margin-top:2em;"/>
+  <ol class="resume">
+    <li> (<%=@contacts.count-%>) Assigned Contacts</li>
+  </ol>
 
+
+  <br style="margin-bottom:3em; margin-top:3em;"/>
   <table class="main long_first_column contacts" >
     <thead>
       <tr>

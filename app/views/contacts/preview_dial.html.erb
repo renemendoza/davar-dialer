@@ -1,3 +1,18 @@
+
+<div class="dialer_header">
+  <ol>
+    <li> My Tasks </li>
+    <li> Settings 
+        <a class="more" href="<%= edit_agent_path(current_user) %>">More Settings</a>
+           
+        <div class="settings">
+          <%= render :partial => 'agents/telephony_settings', :locals => {:agent => current_user } %>
+        </div> 
+    </li>
+  </ol>
+</div>
+
+
 <%= link_to "Contact Information", "#", :class => "button_small_dark_gray", :id => "toggle_show_contact_information_link", "data-bind" => "click: toggleShowContactInformation" %> 
 <%= link_to "Scheduled Tasks", "#", :class => "button_small_dark_gray", :id => "toggle_show_scheduled_tasks_link", "data-bind" => "click: toggleShowScheduledTasks" %> 
 <%= link_to "Notes", "#", :class => "button_small_dark_gray", :id => "toggle_show_notes_link", "data-bind" => "click: toggleShowCallHistory" %> 
@@ -6,7 +21,7 @@
 <br/><br/>
 
   <div id="dialer_panel" >
-    <h4> <%=@contact.name-%> </h4>
+    <h3> <%=@contact.name-%> </h3>
       <div class="call_progress">
         <div class="remote_party"> 
         </div>
@@ -19,12 +34,10 @@
         </div>
       <br style="clear:both"/>
       </div>
-    <h5> Answering Machine Detection is <%= amd_status(current_user) -%> <br/>
-     Call Recording is <%= amd_status(current_user) -%> </h5>
   </div>
 
   <div id="wrapup_contact_form" data-bind="visible: !callAttemptInProgress()">
-    <%= semantic_form_for @contact, :as => :post, :url => contacts_wrap_up_path(@contact), :html => { :class => "formtastic_small wrapup_contact" } do |form|%>
+    <%= semantic_form_for @contact, :as => :post, :url => contacts_wrap_up_path(@contact), :html => { :class => "small wrapup_contact" } do |form|%>
       <fieldset class="inputs">
         <ol>
           <li class="boolean optional">
@@ -34,6 +47,10 @@
           <li class="boolean optional">
             <label for"contact_disposition_open">Open</label>
             <input id="contact_disposition_open" type="radio" name="contact[disposition]" value="open">
+          </li>
+          <li class="boolean optional">
+            <label for"contact_disposition_open">Sale</label>
+            <input id="contact_disposition_open" type="radio" name="contact[disposition]" value="closed_sale">
           </li>
           <li class="boolean optional">
             <label for"contact_disposition_closed_no_sale">Closed No Sale</label>
@@ -50,7 +67,7 @@
         </ol>
       </fieldset>
       <%= form.buttons do %>
-          <li><button type="submit">Wrap Up Call</button>
+          <li><button class="medium" type="submit">Wrap Up Call</button>
           </li>
       <% end %>
     <% end %>
@@ -61,11 +78,11 @@
 
   <div id="edit_contact_form" data-bind="visible: showContactInformation">
     <h4> Contact Information </h4>
-    <%= semantic_form_for @contact, :remote => true, :html => { :class => "formtastic_small edit_contact" } do |form|%>
+    <%= semantic_form_for @contact, :remote => true, :html => { :class => "small edit_contact" } do |form|%>
       <%= render :partial => 'form', :locals => {:form => form } %>
     <br style="margin-bottom:1em; margin-top:1em;"/>
       <%= form.buttons do %>
-          <li>
+          <li><button class="medium" type="submit">Update</button>
             <%= link_to "Update", "#", :class => "button_small_dark_gray", :id => "contact_information_update_link" %>  
           </li>
       <% end %>
