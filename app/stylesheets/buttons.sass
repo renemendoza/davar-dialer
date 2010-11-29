@@ -8,13 +8,39 @@ body
 !red = adjust_hue(!green, -100)
 !heart_button = saturate(lighten(!red, 2), 20)
 
+button
+  +fancy-button-structure
+  +fancy-button-colors-matte(#ddd)
+
+button.small
+  +fancy-button-structure
+  +fancy-button-colors-matte(#606060)
+  +fancy-button-padding(2px, 6px, 2px)
+  :font-weight bold
+  :text-decoration none
+
+button.medium
+  +fancy-button-structure
+  +fancy-button-colors-matte(#ddd)
+  +fancy-button-padding(4px, 9px, 4px)
+  +border-radius(4px)
+  :border-width 1px
+  :font-size 1.2em
+  :font-weight bold
+  :text-decoration none
+
+
+button.medium:active
+  :border-width 2px
+
+button.green
+  +fancy-button-colors(!green)
 
 =custom-fancy-gradient(!color1, !color2)
   +radial-gradient(color_stops(!color1, darken(!color2, 5) 30px), "50% 10%")
 =invert-custom-fancy-gradient(!color1, !color2)
   +custom-fancy-gradient(lighten(!color2, 10), lighten(!color2, 25))
-  
-a.button, button  
+a.button
   +fancy-button-structure
   +fancy-button-colors
   margin: 0 2px
