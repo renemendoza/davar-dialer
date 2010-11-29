@@ -1,65 +1,125 @@
 // Only apply the blueprint form styles to forms with
 // a class of "bp". This makes it easier to style
 // forms from scratch if you need to.
-
 @import partials/formtastic_base
 
-form.bp
-  +blueprint-form
+
+form fieldset 
+  :border 0px solid #CCC
+form fieldset > ol
+  :list-style-type none
+  :padding-left 0em
 
 
-form.formtastic fieldset > ol > li
-  :overflow hidden !important
-
-form.formtastic fieldset > ol > li.file
-  :overflow visible !important
-
-=form_quick(!a,!b,!c)
-  +float-form(!a,!b,!c)
-  :padding 20px
+form.mini fieldset
   li
-    :height 50px
-    input
-      :border 1px solid #D1EAF0
-      :background-color #F6FDFE
-      :font-size 1.6em
-      :padding 0.2em
-    input[type="file"]
-      :width 8em !important
-      :size 8
+    :line-height 1em
     label
-      :font-size 1.6em
+      :float left
+      :font-size 13px
       :font-weight bold
-      :color #333333
-      :padding 0.2em
- 
-  fieldset.buttons ol li
-    :height 70px
-    :float right !important
+    input
+      :font-size 12px
+      :float left
+    button
+      :font-size 14px
+      :float right
+      :margin-right 5px
 
-form#new_session
-  +form-quick(38em,12em,10em)
-  :width 70%
-  :margin 6em
+
+form.small fieldset
+  :width 34em
+  legend
+    :font-size 1.5em
+    :font-weight bold
+  li
+    :line-height 4em
+    label
+      :float left
+      :font-size 1.2em
+      :font-weight bold
+      :width 12em
+    input
+      +border-radius(4px)
+      :margin-right 5px
+      :font-size 1.1em
+      :border 1px solid #9BE1FB
+      :width 12em
+      :padding 0.5em
+
+    input:focus
+      :background-color #C5EFFD
+
+
+    input[type=checkbox] 
+      :float left
+      :margin-right 5px
+    button
+      :float right
+      :margin-right 5px
+
+
+form.small fieldset.buttons ol 
+  :padding-right 20px
+  
+form.main fieldset
+  +column(18)
+  legend
+    :font-size 1.5em
+    :font-weight bold
+  li
+    :line-height 60px
+    label
+      :float left
+      :font-size 1.4em
+      :font-weight bold
+      :width 18em
+    input
+      +border-radius(4px)
+      :margin-right 5px
+      :font-size 1.3em
+      :border 1px solid #9BE1FB
+      :width 15em
+      :padding 0.5em
+
+    input:focus
+      :background-color #C5EFFD
+
+    input[type=checkbox] 
+      :margin-right 5px
+
+    button
+      :float right
+      :margin-right 5px
+
+form.main fieldset.buttons ol 
+  :padding-right 80px
+
+form.login
+  +column(12)
+  :margin-top 8em
+  :margin-left 10em
+  :padding 4em
   :border 1px solid #D1EAF0
 
-form.formtastic
-  +form_quick(56em,16em,18em)
-  input#agent_use_amd
-    :width 1.2em !important
-    :text-align left
-
-form.formtastic_small
-  +form_quick(32em,10em,16em)
-  :padding 0px 10px !important
   li
-    :height 35px
+    :line-height 60px
     label
-      :font-size 1.2em
+      :float left
+      :font-size 1.4em
+      :font-weight bold
+      :width 8em
     input
-      :border 1px solid #D1EAF0
-      :background-color #F6FDFE
-      :font-size 1em
-      :padding 0.2em
-  .buttons
-    :width 14em
+      +border-radius(4px)
+      :margin-right 5px
+      :font-size 1.3em
+      :border 1px solid #9BE1FB
+      :width 12em
+      :padding 0.5em
+
+    input:focus
+      :background-color #C5EFFD
+
+    button
+      :float right
+      :margin-right 5px
