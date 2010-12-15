@@ -1,4 +1,4 @@
-      <fieldset class="inputs">
+      <fieldset class="inputs left_stf">
         <ol>
           <li class="string optional">
             <%= label("scheduled_task", "description", "Description") -%>
@@ -12,13 +12,17 @@
             <%= label("scheduled_task", "task_type", "Phone Call") -%>
             <%= radio_button("scheduled_task", "task_type", "phone_call") -%>
           </li>
+        </ol>
+      </fieldset>
+      <fieldset class="inputs right_stf">
+        <ol>
           <li class="optional">
-            <%= label("scheduled_task", "scheduled_at", "Select Time & Date") -%>
+            <%= label("scheduled_task", "scheduled_at", "Time & Date") -%>
             <%= hidden_field("scheduled_task", "scheduled_at") -%>
             <%= hidden_field("scheduled_task", "contact_id" ) -%>
             <%= hidden_field("scheduled_task", "agent_id") -%>
-            <div class="date_picker">
-            </div>
           </li>
         </ol>
       </fieldset>
+      <div class="date_picker">
+      </div>

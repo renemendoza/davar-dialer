@@ -3,11 +3,8 @@ DavarDialer::Application.routes.draw do
 
 
 
-#  post "scheduled_tasks/create"
 
   match 'contact_lists/assign' => 'contact_lists#assign', :as => :contact_lists_assign
-#  match 'contact_lists/preview/:id' => 'contact_lists#preview', :as => :contact_lists_preview
-#  match 'contact_lists/import_contacts/:id' => 'contact_lists#import_contacts', :as => :contact_lists_import_contacts
 
   match 'contacts/preview_dial/:id' => 'contacts#preview_dial', :as => :contacts_preview_dial
   match 'contacts/dial/:id' => 'contacts#dial', :as => :contacts_dial
