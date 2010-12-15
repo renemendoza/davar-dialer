@@ -3,7 +3,6 @@ class AutoCall < ActiveRecord::Base
   belongs_to :contact, :counter_cache => true
 
 
-
   def dial_string
     dialer_trunk =APP_CONFIG[:dialer_trunk]
     unless agent.trunk.nil? || agent.trunk.blank?
@@ -13,8 +12,9 @@ class AutoCall < ActiveRecord::Base
     end
   end
 
+
+  #duration and agent_delay seem to map directly to cdr_duration and cdr_billsec
   def duration
-    #lets just process the CDR event for this one ?
     if leg_a_answered_at.nil?
       return 0
     else
@@ -40,16 +40,25 @@ class AutoCall < ActiveRecord::Base
     return true
   end
 
+
+
   #maybe move this to a module ?
   def self.process_originate_response(action_id, reason, uid)
-    resp_codes = Agent::ResponseCodes
+    resp_codes = Agent::ResponseCodes  #this shouldnt be loaded from the Agent namespace
     if ac = AutoCall.find_by_action_id(action_id)
+      #if reason = answer  seria mejor programacion
       ac.result_leg_a = resp_codes.include?(reason) ? resp_codes[reason] : "other_#{reason}"
       ac.unique_id_a = uid
       if ac.result_leg_a == "answered"
         ac.leg_a_answered_at = Time.now
+        ac.state = "remote_end_answered"
+      else
+        ac.state = "finished_with_error"
+        ac.error = ac.result_leg_a
       end
       ac.save
+    else
+      ahn_log "WHY I AM HERE?  action_id: #{action_id}"
     end
   end
 
@@ -58,6 +67,7 @@ class AutoCall < ActiveRecord::Base
       if ac.unique_id_b.nil? and ac.leg_b_answered_at.nil?
         ac.unique_id_b = uid_b
         ac.leg_b_answered_at = Time.now
+        ac.state = "live"
         ac.save
       end
     end
@@ -81,6 +91,7 @@ class AutoCall < ActiveRecord::Base
         ac.leg_b_hangup_at = Time.now
         ac.hangup_by ||= :agent
       end
+      ac.state = "finished"
       ac.save
     end
   end

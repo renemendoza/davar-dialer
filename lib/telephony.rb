@@ -1,5 +1,6 @@
 module Telephony
 
+
   class TelephonyError < RuntimeError
   end
 
@@ -29,7 +30,7 @@ module Telephony
       if ex.is_a? DRb::DRbConnError
         raise TelephonyError, "Connection to Adhearsion via DRb failed:  #{ex.message}"
       else
-        raise TelephonyError, "An error has ocurred:  #{ex.message}"
+        raise TelephonyError, "An error has ocurred:  #{ex.message}  "
       end
     end
 
@@ -51,8 +52,8 @@ module Telephony
 
     auto_call.save #maybe this is redundant?
     agi_url = "agi://127.0.0.1/" + context   #maybe we dont want to hardcode the URL 
-      
-    res = AHN.originate({
+
+    action_id = AHN.originate_queue({
           :channel   => channel,    #the remote
           :application   => "AGI",  #local leg  :)
           :data => agi_url,
@@ -61,8 +62,10 @@ module Telephony
           :variable => "auto_call_id=#{auto_call.id}",
           :async => 'true' })
 
-
-    auto_call.action_id = res.headers["ActionID"]
+    #check the action_id and raise an error if necessary
+    auto_call.action_id = action_id
+    #auto_call.dialing_remote_end!
+    auto_call.state = "originate_attempt"
     auto_call.save
     auto_call
   end
