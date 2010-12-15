@@ -1,44 +1,58 @@
-div#dialer_panel_2
-  +column(12)
-  +push(4)
-  +box-shadow
-  :position absolute
-  :z-index 10
-  :padding 2em
-  :background-color #fff
-  :opacity 0.9
-  :-moz-border-radius 6px
-  :-webkit-border-radius 6px
-  :-moz-box-shadow  0 0 50px #ccc
-  :-webkit-box-shadow  0 0 50px #ccc
-
-
-div.mask 
-  :margin-top 0px
-  :position absolute
-  :top 0
-  :left 0
-  :z-index 9
-  :background-color #fff
-  :display none
-  :opacity 0.8
+@import fancy_buttons.sass
 
 
 div#dialer_panel
-  +column(12)
-  div.call_progress
-    :margin-left 4em
-    div.remote_party
-      +column(2)
-    div.progress_bar
-      +column(6)
-    div.local_party
-      +column(2)
+  :text-align center
+
+div.viz_hidden
+  :visibility hidden
 
 div#wrapup_contact_form
-  +column(8)
+  :margin-left 3em
 
-div#edit_contact_form 
+  fieldset.left_wrapup
+    +column(10)
+
+  fieldset.right_wrapup
+    +column(10)
+  fieldset ol
+    li:hover
+      :background -moz-linear-gradient(center top , #FFFFFF 0%, #CECECE 100%) repeat-x scroll left bottom white
+      
+  .buttons
+    :float right
+    :margin-right 4em
+
+
+
+ol#dialer_tabs
+  :list-style-type none
+  :margin 0
+  li
+    +fancy-button-structure
+    +fancy-button-colors-matte(#ddd)
+    +fancy-button-padding(4px, 9px, 4px)
+    +border-radius(4px)
+    :text-align center
+    :border-width 2px
+    :display inline
+    :font-size 1.4em
+    :font-weight bold
+  li:hover
+    +fancy-button-colors-matte(#606060)
+  li:active
+    :border-width 2px
+  li.clicked_tab
+    +fancy-button-colors-matte(#606060)
+
+div.tab_content
+  +border-radius(4px)
+  :border 2px solid #323232
+  :margin 0
+  :padding 1.5em
+
+div#contact_information
+
   .left_contact_info
     +column(10)
   .right_contact_info
@@ -47,68 +61,91 @@ div#edit_contact_form
     :float right
     :margin-right 4em
 
+div#call_history
 
-div#scheduled_tasks_list
-  +column(10)
+div#scheduled_tasks
+  :display none
 
-div#new_scheduled_task_form
-  +column(12)
-  +box-shadow
-  :position absolute
-  :margin-top -20em
-  :z-index 10
-  :padding 2em
-  :background-color #fff
-  :opacity 0.9
-  :-moz-border-radius 6px
-  :-webkit-border-radius 6px
-  :-moz-box-shadow  0 0 50px #ccc
-  :-webkit-box-shadow  0 0 50px #ccc
+  div#scheduled_tasks_list
+    +column(12)
+    :padding 1em 1em 2em 1em
 
-  .buttons
-    :float right
-    :margin-right 4em
+  div#new_scheduled_task_form
+    +column(19)
+    :padding 2em 1em 2em 1em
+    :border-top 2px solid #ddd
+    fieldset.left_stf
+      +column(9.5)
+    fieldset.right_stf
+      +column(9)
+
+    .buttons
+      :float right
+      :margin-right 2em
+      :margin-top 2em
 
 
 img.scheduled_task
   :vertical-align middle
   :margin-right 1em
 
-ol.resume
-  +column(9)
-  li
-    :font-size 1.4em
-    :font-weight bold
 
-div.dialer_header
+div.left_toolbar
   :position fixed
-  :right 0
-  :top 100px
+  :right 100px
+  :top 70px
   ol
     :list-style-type none
     :margin 0
+    :width 12em
     li
-      :background -moz-linear-gradient(center top , #FFFFFF 0%, #CECECE 100%) repeat-x scroll left bottom white
-      :font-size 1.4em
+      +fancy-button-structure
+      +fancy-button-colors-matte(#ddd)
+      :width 12em
       :-moz-border-radius 6px 0px 0px 6px
       :-webkit-border-radius 6px 0px 0px 6px
       :padding-left 10px
-      :font-weight bold
 
       a.more
         +unstyled-link
         :font-size 11px
         :cursor pointer
 
-    li:hover
-      :background -moz-linear-gradient(center top , #989898 0%, #6A6A6A 10%, #3C3C3C 50%, #353535 50%, #4E4E4E 100%) repeat-x scroll left bottom #444444
-      :color #FFF
+      div.settings 
+        :display none
 
-      a.more
-        :color #FFF
+      div.settings fieldset
+        :width 12em
 
-    li:hover div.settings
-      :color #FFF
-
-      ol li
+      div.settings fieldset.inputs ol li 
+        +border-radius(4px)
+        +fancy-button-padding(2px, 6px, 2px)
+        :width 11em
+      div.settings fieldset.buttons ol li
+        +border-radius(0px)
+        :width 11em
+        :background-image none
         :background none
+        :border none
+
+    li:active
+      +fancy-button-colors-matte(#ddd)
+
+    li:hover
+      +fancy-button-colors-matte(#606060)
+
+
+      div.settings 
+        :display inline
+
+
+      div.settings fieldset.inputs ol li label
+        :text-shadow none !important
+
+      div.settings fieldset.inputs ol li:hover label
+        :text-shadow 1px 1px 1px #202020 !important
+
+      div.nada
+        :text-shadow 0 1px 1px #202020 !important
+
+

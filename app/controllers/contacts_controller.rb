@@ -1,16 +1,13 @@
 class ContactsController < ApplicationController
   before_filter :require_valid_account
 
-
-
-
   rescue_from Telephony::TelephonyError, :with => :telephony_error
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found_error
 
 
   def index
     @contacts = current_user.assigned_contacts
-    @myself = current_user
+    @agent = current_user
   end
 
   def edit   #could be renamed to something else using rails routing but i am not sure to what
@@ -32,17 +29,21 @@ class ContactsController < ApplicationController
   def preview_dial
     @contact = current_user.assigned_contacts.find(params[:id]) 
     @scheduled_task  = ScheduledTask.new(:agent_id => current_user.id, :contact_id => @contact.id)
+    #@auto_call = current_user.dial(@contact)     
   end
 
   def dial
     @contact = current_user.assigned_contacts.find(params[:id]) 
+    raise ActiveRecord::RecordNotFound if @contact.nil?
+
     @auto_call = current_user.dial(@contact)     
 
     flash[:notice] = "Call to #{@contact.name} at #{@contact.phone_number_1} is in progress."
 
     respond_to do |format|
       format.html { redirect_to contacts_path }
-      format.js { render :json => @auto_call }
+      format.js { render :json => @auto_call.to_json(:only => [:id, :action_id], :methods => :state) }
+      #format.js { render :json => @auto_call.to_json(:only => [:id, :action_id, :state]) }
     end
   end
 
@@ -69,7 +70,10 @@ class ContactsController < ApplicationController
   
   def record_not_found_error(ex)
       flash[:error] = "Call failed: That record does not exist #{ex.message}."
-      redirect_to contacts_path 
+      respond_to do |format|
+        format.html { redirect_to contacts_path }
+        format.js { render :status => :not_found }
+      end
   end
 
   def dialer_next_path

@@ -11,7 +11,7 @@ class CallsController < ApplicationController
     @auto_call = AutoCall.find(params[:id])
     #include the contact name
     respond_to do |format|
-      format.js { render :json => @auto_call }
+      format.js { render :json => @auto_call.to_json(:only => [:id, :action_id], :methods => :state)  }
     end
   end
 

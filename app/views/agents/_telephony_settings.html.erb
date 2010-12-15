@@ -1,0 +1,15 @@
+<%= semantic_form_for agent,  :html => { :class => "mini dialer_settings" } do |form|%>
+  <%= form.inputs do %>
+    <li id="agent_use_amd_input" class="boolean optional">
+      <%= label("agent", "use_amd", "Skip Answering Machines") -%>
+      <%= check_box("agent", "use_amd") -%>
+    </li>
+    <li id="agent_automatic_dialer_input" class="boolean optional">
+      <%= label("agent", "automatic_dialer", "Automatic mode") -%>
+      <%= check_box("agent", "automatic_dialer") -%>
+    </li>
+  <% end %>
+  <%= form.buttons do %>
+      <li><button type="submit" class="small">Save</button></li>
+  <% end %>
+<% end %>
