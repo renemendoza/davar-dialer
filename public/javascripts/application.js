@@ -1,217 +1,147 @@
 $(document).ready(function(){
   $("table.main tbody tr:odd").addClass("odd");
+  //$("span#state").bind("STATE_CHANGE", function(e))
+
+    //alert("STATE CHANGED:" + d.state);
 });
 
+/*
+var DialerUI = {
+  "update": function(state) {
 
-
-
-var viewModel = {};
-viewModel.statusMessage = ko.observable(""); 
-viewModel.callAttemptInProgress = ko.observable(false); 
-viewModel.showContactInformation = ko.observable(true); 
-viewModel.showScheduledTasks = ko.observable(false); 
-viewModel.showNewScheduledTaskForm = ko.observable(false); 
-viewModel.showCallHistory = ko.observable(false); 
-
-//viewModel.showNotes = ko.observable(false); 
-
-viewModel.UI = {};
-
-viewModel.UI.mask = {
-
-  "show": function() {
-    div = $('div#mask').addClass("mask")
-    div.css('width', screen.width); 
-    div.css('height', screen.height); 
-    $("div#mask").fadeIn('slow');
-  },
-  "hide": function() {
-    $("div#mask").fadeOut('slow');
-    div = $('div#mask').removeClass("mask")
-    div.css('width', 0); 
-    div.css('height', 0); 
   }
-
-
 };
+*/
 
-viewModel.UI.status_indicator = function(color, element_selector) {
-  $(element_selector + " img").fadeOut().remove();
-
-  path = "/images/phone_" + color + ".png";
-  img = $('<img>').attr({ src : path })
-
-  $(element_selector).append(img).fadeIn();
-};
-
-
-viewModel.UI.dial = function() {
-  //viewModel.UI.mask.show();
-  viewModel.statusMessage("Attempting call"); 
-  viewModel.UI.status_indicator("gray", "div.remote_party");
-};
-
-
-viewModel.UI.contact_answered = function() {
-  viewModel.statusMessage("Remote party answered..."); 
-  viewModel.UI.status_indicator("green", "div.remote_party");
-  viewModel.UI.status_indicator("gray", "div.local_party");
-};
-
-viewModel.UI.active_call = function() {
-  viewModel.statusMessage("Call active"); 
-  viewModel.UI.status_indicator("green", "div.local_party");
-};
-
-viewModel.UI.call_has_ended = function() {
-  viewModel.statusMessage("Call has ended...."); 
-  viewModel.UI.status_indicator("gray", "div.remote_party");
-  viewModel.UI.status_indicator("gray", "div.local_party");
-  viewModel.callAttemptInProgress(false); 
-};
-
-viewModel.UI.hangup = function() {
-//    viewModel.UI.mask.hide();
-    viewModel.statusMessage(""); 
-};
-
-
-
-
-
-viewModel.dial = function(contact_id) {
-
-    this.callAttemptInProgress(true); 
-    viewModel.originateAttempt(contact_id); 
-
-};
-
-viewModel.originateAttempt = function(contact_id) {
-  uri = "/contacts/dial/" + contact_id;
-  $.ajax({
-    url: uri,
-    dataType: "json",
-    type: "GET",
-    processData: false,
-    contentType: "application/json",
-    success: function(data) {
-      viewModel.UI.dial(); 
-      viewModel.pollSuccessfulContact(data["auto_call"]);
-    }
-  });
+function DialAttempt(contact_id) {
+  this.contact_id = contact_id;
+  this.contact_uri = "/contacts/dial/" + this.contact_id;
+  this.auto_call = null;
+  this.auto_call_base_uri = "/calls/";
+  this.auto_call_uri = null;
+  this.state = "idle"; 
+  this.start();
 }
 
-viewModel.callProgressControl = function(auto_call) {
-  if (auto_call["leg_a_hangup_at"] == null) {
 
-    if ( (auto_call["result_leg_a"] == "answered") || (auto_call["leg_a_answered_at"] != null) ) {
-      if ( (auto_call["result_leg_b"] == "answered") || (auto_call["leg_b_answered_at"] != null) ) {
-        viewModel.UI.active_call(); 
-      } else {
-        viewModel.UI.contact_answered(); 
+
+DialAttempt.prototype = {
+
+  "start": function() {
+    $.ajax({
+      url: this.contact_uri,
+      dataType: "json",
+      type: "GET",
+      processData: false,
+      contentType: "application/json",
+      context: this,
+      success: function(data) {
+        
+        this.auto_call = data["id"];
+        this.auto_call_uri = this.auto_call_base_uri + this.auto_call;
+
+        this.stateUpdate(data["state"]);
+
+
+      },
+      error:function(request, textStatus, errorThrown) {
+        alert("there has been an error");
       }
+    });
+  },
+
+  "pollStart": function() {
+    $(this).everyTime(1000, 'autoCallPoll', function() {
+      this.poll();
+    });
+  },
+
+  "poll": function() {
+    $.ajax({
+      url: this.auto_call_uri,
+      dataType: "json",
+      type: "GET",
+      processData: false,
+      contentType: "application/json",
+      context: this,
+      success: function(data) {
+        this.stateUpdate(data["state"]);
+      }
+    });
+  },
+
+  "pollStop": function() {
+    $(this).stopTime('autoCallPoll');
+  },
+
+  "stateUpdate": function(s) {
+
+    //#maybe if this.state == s then is shouldnt do a darn thing 
+
+
+    if ((this.state == "idle") && (s == "originate_attempt")) {
+      $("h4#state").text("Attempting call");
+      this.pollStart();
     }
-  } else {
-    $(this).stopTime('successfulContact');
-    viewModel.UI.call_has_ended(); 
-    //CALL WRAPUP
-    //SCHEDULE CALLBACK?
-    //cleanup
+
+    if ((this.state != "remote_end_answered") && (s == "remote_end_answered")) {
+      $("h4#state").text("Remote end answered");
+    }
+
+    if ((this.state != "live") && (s == "live")) {
+      $("h4#state").text("Call is live");
+      $("div#dialer_panel img").fadeOut();
+    }
+
+    if (s == "finished") {
+      this.pollStop();
+      $("h4#state").text("Call has ended");
+      $("div#wrapup_contact_form").removeClass("viz_hidden").fadeIn();
+    }
+
+    if (s == "finished_with_error") {
+      this.pollStop();
+      $("h4#state").text("Call attempt failed");
+      //disable certain elements
+      //should display an alert
+      //show reason for error
+      $("div#wrapup_contact_form").removeClass("viz_hidden").fadeIn();
+    }
+ 
+    this.state = s;
+    window.dialAttemptState = s;
   }
-
-
-}
-
-
-viewModel.callProgressUpdate = function(auto_call_id) {
-// WE WANT TO USE LONG POLLING and OPTIMIZE USING CALLS TO REDIS / SILKWAMIK HERE
-//uri = "/calls/progress/" + auto_call_id;  
-  uri = "/calls/" + auto_call_id;   //rails-database based url
-  $.ajax({
-    url: uri,
-    dataType: "json",
-    type: "GET",
-    processData: false,
-    contentType: "application/json",
-    success: function(data) {
-      viewModel.callProgressControl(data["auto_call"]);
-    }
-  });
-}
-
-viewModel.pollSuccessfulContact = function(auto_call) {
-
-  $(this).everyTime(1000, 'successfulContact', function() {
-    this.callProgressUpdate(auto_call["id"]);
-  });
-
-}
-
-viewModel.hangup = function() {
-    this.callAttemptInProgress(false); 
-    viewModel.UI.hangup();
 };
 
-// DE AQUI PARA ABAJO NECESITAMOS REFACTORAR
-
-viewModel.toggleShowContactInformation = function() {
-    this.showContactInformation(! this.showContactInformation() ); 
-    $("#toggle_show_contact_information_link").toggleClass( "button_small_dark_gray" );
-    $("#toggle_show_contact_information_link").toggleClass( "button_small_gray" );
-
-    this.showScheduledTasks(false); 
-    this.showCallHistory(false); 
-};
-
-
-viewModel.toggleShowScheduledTasks = function() {
-    this.showScheduledTasks(! this.showScheduledTasks() ); 
-    $("#toggle_show_scheduled_tasks_link").toggleClass( "button_small_dark_gray" );
-    $("#toggle_show_scheduled_tasks_link").toggleClass( "button_small_gray" );
-    this.showCallHistory(false); 
-    this.showContactInformation(false); 
-};
-
-viewModel.newScheduledTask = function() {
-    this.showNewScheduledTaskForm(! this.showNewScheduledTaskForm() ); 
-    viewModel.UI.mask.show();
-//    ko.observable(false); 
-//    this.showNewScheduledTaskForm = ko.observable(false); 
-}
-viewModel.cancelScheduledTask = function() {
-    viewModel.UI.mask.hide();
-    this.showNewScheduledTaskForm(! this.showNewScheduledTaskForm() ); 
+function tab_handler(el, tabs) {
+  var tabs = $.map( tabs, function (a) { return (a==el ? null : a); } );
+  //remove other elements
+  $.each(tabs, function(i,el) {
+    element_tab = el + "_tab";
+    $(element_tab).removeClass("clicked_tab");
+    $(el).hide();
+  }); 
+  //show element
+  element_tab = el + "_tab";
+  $(element_tab).addClass("clicked_tab"); 
+  $(el).show();
 }
 
+function tab_setup(el, tabs) {
+  tab_handler(el, tabs);  //initial state
 
-viewModel.toggleShowCallHistory = function() {
-    this.showCallHistory(! this.showCallHistory() ); 
-    $("#toggle_show_call_history_link").toggleClass( "button_small_dark_gray" );
-    $("#toggle_show_call_history_link").toggleClass( "button_small_gray" );
-    this.showContactInformation(false); 
-    this.showScheduledTasks(false); 
+  $.each(tabs, function(i,el) {
+    element_tab = el + "_tab";
+
+    $(element_tab).bind('click', function () {
+      tab_handler(el, tabs);
+    });
+
+  });
 };
 
-
-
-// REFACTOR END
-
-
-
-$(document).ready(function () {
- // $( "div#new_scheduled_task_form .date_picker" ).datepicker( { altField: '#scheduled_task_scheduled_at' } );
- $( "div#new_scheduled_task_form .date_picker" ).datetimepicker( { altField: '#scheduled_task_scheduled_at', showButtonPanel: false } );
-
-  $('a#contact_sinformation_update_link').click(function() {
-    $('form.edit_contact').submit();
-  });
-  $('a#schedule_task_save_link').click(function() {
-    $('form.new_scheduled_task').submit();
-//    $('form.new_scheduled_task').reset();
-    viewModel.cancelScheduledTask();
-  });
-  ko.applyBindings(viewModel);
-}); 
+/*
+*/
 
 
 
