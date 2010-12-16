@@ -1,18 +1,9 @@
 $(document).ready(function(){
   $("table.main tbody tr:odd").addClass("odd");
   $('div#flash_notice').delay(500).fadeOut();
-  //$("span#state").bind("STATE_CHANGE", function(e))
-
-    //alert("STATE CHANGED:" + d.state);
+  $('div#flash_error').delay(1000).fadeOut();
 });
 
-/*
-var DialerUI = {
-  "update": function(state) {
-
-  }
-};
-*/
 
 function DialAttempt(contact_id) {
   this.contact_id = contact_id;
@@ -46,6 +37,7 @@ DialAttempt.prototype = {
 
       },
       error:function(request, textStatus, errorThrown) {
+        //actually we should send a flash.error div, not an alert
         alert("there has been an error");
       }
     });
@@ -140,10 +132,6 @@ function tab_setup(el, tabs) {
 
   });
 };
-
-/*
-*/
-
 
 
   /* 
