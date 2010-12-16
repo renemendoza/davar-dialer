@@ -1,5 +1,6 @@
 $(document).ready(function(){
   $("table.main tbody tr:odd").addClass("odd");
+  $('div#flash_notice').delay(500).fadeOut();
   //$("span#state").bind("STATE_CHANGE", function(e))
 
     //alert("STATE CHANGED:" + d.state);
